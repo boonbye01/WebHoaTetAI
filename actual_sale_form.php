@@ -158,7 +158,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ch&#7889;t b&#225;n Sau L&#234;n xe</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile20">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile24">
 </head>
 <body>
   <div class="container">
