@@ -595,7 +595,8 @@ table td {
 }
 .compare-table th:nth-child(1),
 .compare-table td:nth-child(1) {
-  width: 32%;
+  width: 5% !important;
+  padding-right: 0 !important;
 }
 .compare-table th:nth-child(2),
 .compare-table td:nth-child(2),
@@ -607,6 +608,10 @@ table td {
   white-space: normal;
   word-break: keep-all;
   padding: 6px 6px;
+}
+.compare-table th:nth-child(2),
+.compare-table td:nth-child(2) {
+  padding-left: 0 !important;
 }
 .compare-table th:nth-child(5),
 .compare-table td:nth-child(5) {
