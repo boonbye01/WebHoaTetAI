@@ -608,8 +608,7 @@ table td {
   word-break: keep-all;
   padding: 6px 6px;
 }
-$118% !important;
-}
+.compare-table th:nth-child(5),`r`n.compare-table td:nth-child(5) {`r`n  width: 18% !important;`r`n}
 @media (max-width: 640px) {
   .compare-table th:nth-child(1),
   .compare-table td:nth-child(1) {
@@ -708,9 +707,7 @@ $118% !important;
 .stats-table-2 {
   table-layout: fixed;
 }
-.stats-table-1 th:nth-child(1),
-.stats-table-1 td:nth-child(1) {
-  width: 40%;
+$128%;
 }
 .stats-table-1 th:nth-child(2),
 .stats-table-1 td:nth-child(2),
@@ -724,9 +721,7 @@ $118% !important;
 .stats-table-1 td:nth-child(5) {
   width: 41% !important;
 }
-.stats-table-2 th:nth-child(1),
-.stats-table-2 td:nth-child(1) {
-  width: 58%;
+$141%;
 }
 .stats-table-2 th:nth-child(2),
 .stats-table-2 td:nth-child(2) {
@@ -770,6 +765,7 @@ $118% !important;
   white-space: normal !important;
   word-break: break-word;
 }
+
 
 
 
