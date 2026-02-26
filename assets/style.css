@@ -592,11 +592,10 @@ table td {
 }
 .compare-table {
   table-layout: fixed;
-  min-width: 760px;
 }
 .compare-table th:nth-child(1),
 .compare-table td:nth-child(1) {
-  width: 240px;
+  width: 32%;
 }
 .compare-table th:nth-child(2),
 .compare-table td:nth-child(2),
@@ -604,19 +603,19 @@ table td {
 .compare-table td:nth-child(3),
 .compare-table th:nth-child(4),
 .compare-table td:nth-child(4) {
-  width: 84px;
+  width: 15%;
   white-space: normal;
   word-break: keep-all;
   padding: 6px 6px;
 }
 .compare-table th:nth-child(5),
 .compare-table td:nth-child(5) {
-  width: 150px !important;
+  width: 18% !important;
 }
 @media (max-width: 640px) {
   .compare-table th:nth-child(1),
   .compare-table td:nth-child(1) {
-    width: 220px;
+    width: 36%;
   }
   .compare-table th:nth-child(2),
   .compare-table td:nth-child(2),
@@ -624,12 +623,12 @@ table td {
   .compare-table td:nth-child(3),
   .compare-table th:nth-child(4),
   .compare-table td:nth-child(4) {
-    width: 80px;
+    width: 14%;
     padding: 5px 5px;
   }
   .compare-table th:nth-child(5),
   .compare-table td:nth-child(5) {
-    width: 140px;
+    width: 19%;
   }
 }
 
