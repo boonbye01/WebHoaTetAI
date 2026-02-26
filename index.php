@@ -55,9 +55,9 @@ function format_decimal($value) {
         <tr>
           <th>Tên Khách hàng</th>
           <th class="ship-col">Giao Hàng</th>
+          <th>Trạng thái</th>
           <th>Số điện thoại</th>
           <th>Địa chỉ</th>
-          <th>Trạng thái</th>
           <th class="quantity-col">Tổng số lượng (Cặp)</th>
           <th class="actions-col">Thao tác</th>
         </tr>
@@ -72,8 +72,6 @@ function format_decimal($value) {
             <td class="ship-col">
               <a class="action-link ship-btn" href="actual_sale_form.php?id=<?php echo $c['id']; ?>">Giao Hàng</a>
             </td>
-            <td><?php echo htmlspecialchars($c['sdt']); ?></td>
-            <td><?php echo htmlspecialchars($c['dia_chi']); ?></td>
             <td>
               <?php if (($c['trang_thai_boc'] ?? 'chua_boc') === 'xong'): ?>
                 <span class="status-pill done">Xong</span>
@@ -81,6 +79,8 @@ function format_decimal($value) {
                 <span class="status-pill pending">Chưa Bốc</span>
               <?php endif; ?>
             </td>
+            <td><?php echo htmlspecialchars($c['sdt']); ?></td>
+            <td><?php echo htmlspecialchars($c['dia_chi']); ?></td>
             <td class="quantity-col"><?php echo htmlspecialchars(format_decimal(total_quantity($pdo, $c['id']))); ?></td>
             <td>
               <div class="row-actions">
