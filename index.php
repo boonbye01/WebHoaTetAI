@@ -28,7 +28,7 @@ function format_decimal($value) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Quản lý hoa Tết</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260225_10">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile1">
 </head>
 <body>
   <div class="container">
@@ -129,6 +129,7 @@ function format_decimal($value) {
   </script>
 </body>
 </html>
+
 
 
 

@@ -29,7 +29,7 @@ function format_vnd($value) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Th&#7889;ng k&#234; t&#7893;ng h&#7907;p</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260225_7">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile1">
 </head>
 <body>
   <div class="container report-shell">
@@ -64,3 +64,4 @@ function format_vnd($value) {
   </div>
 </body>
 </html>
+

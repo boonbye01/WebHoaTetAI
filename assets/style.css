@@ -319,3 +319,71 @@ table td {
 .import-form input {
   min-width: 140px;
 }
+
+/* mobile-tuning-v1 */
+@media (max-width: 900px) {
+  .container {
+    margin: 12px;
+    padding: 16px;
+  }
+
+  .header {
+    flex-wrap: wrap;
+  }
+
+  .actions {
+    flex-wrap: wrap;
+  }
+
+  .inline-form {
+    flex-wrap: wrap;
+  }
+
+  .inline-form input,
+  .inline-form select,
+  .inline-form button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .table-inline-form {
+    flex-wrap: wrap;
+  }
+
+  .table-inline-form input[type="number"] {
+    width: 100%;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .actions .button,
+  .actions a.button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .row-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .row-actions .action-link {
+    min-width: 92px;
+    padding: 7px 10px;
+  }
+
+  .actions-col {
+    min-width: 130px;
+  }
+
+  .import-panel {
+    padding: 10px;
+  }
+}
