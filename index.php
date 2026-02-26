@@ -38,7 +38,6 @@ function format_decimal($value) {
         <a class="button" href="customer_form.php">Thêm khách hàng</a>
         <a class="button secondary" href="flowers.php">Quản lý loại hoa</a>
         <a class="button secondary" href="report.php">Thống kê</a>
-        <a class="button secondary" href="logout.php">Đăng xuất</a>
       </div>
     </header>
 

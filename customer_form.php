@@ -57,7 +57,6 @@ if (count($items) === 0) {
       <h1><?php echo $khach_hang['id'] ? 'Sửa khách hàng' : 'Thêm khách hàng'; ?></h1>
       <div class="actions">
         <a class="button secondary" href="index.php">Quay lại</a>
-        <a class="button secondary" href="logout.php">Đăng xuất</a>
       </div>
     </header>
 
@@ -108,7 +107,7 @@ if (count($items) === 0) {
             <input type="number" step="0.01" min="0" name="items[<?php echo $index; ?>][so_luong]" class="qty-input" value="<?php echo htmlspecialchars(format_decimal_input($item['so_luong'])); ?>" placeholder="SL">
             <input type="text" name="items[<?php echo $index; ?>][gia]" class="price-input currency-input" value="<?php echo htmlspecialchars(format_decimal_input($item['gia'] ?? '')); ?>" placeholder="0">
             <div class="subtotal-text">0</div>
-            <button type="button" class="button danger" onclick="removeRow(this)">Xóa dòng</button>
+            <button type="button" class="remove-row-btn" onclick="removeRow(this)" aria-label="Xóa dòng" title="Xóa dòng">&#128465;</button>
           </div>
         <?php endforeach; ?>
       </div>
@@ -146,9 +145,10 @@ if (count($items) === 0) {
       <input type="number" step="0.01" min="0" name="" class="qty-input" placeholder="SL">
       <input type="text" name="" class="price-input currency-input" placeholder="0">
       <div class="subtotal-text">0</div>
-      <button type="button" class="button danger" onclick="removeRow(this)">Xóa dòng</button>
+      <button type="button" class="remove-row-btn" onclick="removeRow(this)" aria-label="Xóa dòng" title="Xóa dòng">&#128465;</button>
     </div>
   </template>
-  <script src="assets/app.js?v=20260225_2"></script>
+  <script src="assets/app.js?v=20260226_1"></script>
 </body>
 </html>
+

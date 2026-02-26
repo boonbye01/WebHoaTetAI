@@ -100,7 +100,6 @@ function format_qty($value) {
       <div class="actions">
         <button type="button" class="button" id="open-import-panel">Nhập từ vườn khác</button>
         <a class="button secondary" href="index.php">Quay lại</a>
-        <a class="button secondary" href="logout.php">Đăng xuất</a>
       </div>
     </header>
 

@@ -387,3 +387,51 @@ table td {
     padding: 10px;
   }
 }
+
+/* customer-form horizontal row tuning */
+#customer-form #items,
+#customer-form .items-header.item-row {
+  min-width: 690px;
+}
+#customer-form #items {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+#customer-form .item-row {
+  grid-template-columns: minmax(150px, 200px) 72px 110px 100px 36px;
+  gap: 6px;
+}
+#customer-form .item-row select,
+#customer-form .item-row input {
+  padding: 6px 8px;
+  font-size: 13px;
+}
+#customer-form .subtotal-text {
+  min-height: 34px;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+.remove-row-btn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #f5b7b1;
+  border-radius: 6px;
+  background: #fff1f0;
+  color: #d93025;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.remove-row-btn:hover {
+  background: #ffe4e1;
+}
+@media (max-width: 640px) {
+  #customer-form .item-row,
+  #customer-form .items-header.item-row {
+    grid-template-columns: minmax(150px, 200px) 68px 100px 92px 34px;
+  }
+}

@@ -40,7 +40,6 @@ function format_vnd($value) {
       </div>
       <div class="actions">
         <a class="button secondary" href="index.php">Quay l&#7841;i</a>
-        <a class="button secondary" href="logout.php">&#272;&#259;ng xu&#7845;t</a>
       </div>
     </header>
 
