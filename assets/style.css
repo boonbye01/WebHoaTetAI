@@ -620,10 +620,18 @@ table td {
   .compare-table {
     min-width: 640px;
   }
+  .compare-table th,
+  .compare-table td {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+  }
   .compare-table th:nth-child(1),
   .compare-table td:nth-child(1) {
     width: 10% !important;
-    padding-right: 2px !important;
+    padding-right: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .compare-table th:nth-child(2),
   .compare-table td:nth-child(2),
@@ -636,7 +644,7 @@ table td {
   }
   .compare-table th:nth-child(2),
   .compare-table td:nth-child(2) {
-    padding-left: 2px !important;
+    padding-left: 0 !important;
   }
   .compare-table th:nth-child(5),
   .compare-table td:nth-child(5) {
