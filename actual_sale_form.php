@@ -158,7 +158,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ch&#7889;t b&#225;n Sau L&#234;n xe</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile30">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile31">
 </head>
 <body>
   <div class="container">
@@ -225,6 +225,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
     </form>
 
     <h2>So kh&#7899;p ph&#225;t sinh</h2>
+    <div class="compare-table-wrap">
     <table class="compare-table">
       <thead>
         <tr>
@@ -256,6 +257,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       <?php endif; ?>
       </tbody>
     </table>
+    </div>
 
     <div class="totals-grid actual-sale-totals">
       <div class="field">

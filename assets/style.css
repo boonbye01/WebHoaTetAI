@@ -613,12 +613,16 @@ table td {
   width: 18% !important;
 }
 @media (max-width: 640px) {
+  .compare-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
   .compare-table {
-    min-width: 755px;
+    min-width: 640px;
   }
   .compare-table th:nth-child(1),
   .compare-table td:nth-child(1) {
-    width: 210px !important;
+    width: 28% !important;
   }
   .compare-table th:nth-child(2),
   .compare-table td:nth-child(2),
@@ -626,12 +630,12 @@ table td {
   .compare-table td:nth-child(3),
   .compare-table th:nth-child(4),
   .compare-table td:nth-child(4) {
-    width: 125px !important;
+    width: 18% !important;
     padding: 5px 5px;
   }
   .compare-table th:nth-child(5),
   .compare-table td:nth-child(5) {
-    width: 170px !important;
+    width: 18% !important;
   }
 }
 
