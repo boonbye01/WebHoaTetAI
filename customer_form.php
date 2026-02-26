@@ -49,11 +49,11 @@ if (count($items) === 0) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?php echo $khach_hang['id'] ? 'Sửa khách hàng' : 'Thêm khách hàng'; ?></title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile4">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile5">
 </head>
 <body>
   <div class="container">
-    <header class="header">
+    <header class="header customer-form-header">
       <h1><?php echo $khach_hang['id'] ? 'Sửa khách hàng' : 'Thêm khách hàng'; ?></h1>
       <div class="actions">
         <a class="button secondary" href="index.php">Quay lại</a>
@@ -153,6 +153,7 @@ if (count($items) === 0) {
   <script src="assets/app.js?v=20260226_2"></script>
 </body>
 </html>
+
 
 
 

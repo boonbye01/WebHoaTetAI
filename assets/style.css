@@ -397,12 +397,12 @@ table td {
 }
 #customer-form .items-header.item-row,
 #customer-form #items .item-row {
-  min-width: 520px;
+  min-width: 470px;
 }
 #customer-form .item-row {
   display: grid !important;
-  grid-template-columns: minmax(100px, 142px) 55px 100px 92px 34px !important;
-  gap: 6px;
+  grid-template-columns: minmax(85px, 120px) 39px 96px 88px 32px !important;
+  gap: 8px;
   align-items: center;
 }
 #customer-form .item-row select,
@@ -443,14 +443,33 @@ table td {
   #customer-form .item-row,
   #customer-form .items-header.item-row {
     display: grid !important;
-    grid-template-columns: minmax(100px, 142px) 55px 94px 88px 32px !important;
-    min-width: 640px;
+    grid-template-columns: minmax(85px, 120px) 39px 90px 84px 30px !important;
+    min-width: 470px;
   }
 }
 
 
 #customer-form .flower-select {
-  font-size: 12px;
+  font-size: 11px;
 }
+
+
+
+.customer-form-header {
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.customer-form-header .actions {
+  margin-top: -4px;
+}
+#customer-form .items-header.item-row div {
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
 
 
