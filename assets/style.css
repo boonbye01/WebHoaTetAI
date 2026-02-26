@@ -560,3 +560,54 @@ table td {
     min-width: 150px;
   }
 }
+
+/* actual-sale-form visual refinements */
+#actual-sale-form .status-field {
+  background: #f8fbff;
+  border: 1px solid #dbeafe;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+#actual-sale-form .status-field label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1f2937;
+}
+#actual-sale-form .status-select {
+  width: 180px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #93c5fd;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+#actual-sale-form .items-header.item-row div {
+  font-size: 12px;
+  font-weight: 700;
+  white-space: normal;
+  line-height: 1.2;
+}
+.compare-table th:nth-child(2),
+.compare-table td:nth-child(2),
+.compare-table th:nth-child(3),
+.compare-table td:nth-child(3),
+.compare-table th:nth-child(4),
+.compare-table td:nth-child(4) {
+  width: 92px;
+}
+@media (max-width: 640px) {
+  #actual-sale-form .status-select {
+    width: 150px;
+  }
+  .compare-table th:nth-child(2),
+  .compare-table td:nth-child(2),
+  .compare-table th:nth-child(3),
+  .compare-table td:nth-child(3),
+  .compare-table th:nth-child(4),
+  .compare-table td:nth-child(4) {
+    width: 82px;
+  }
+}

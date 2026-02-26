@@ -169,7 +169,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ch&#7889;t b&#225;n Sau L&#234;n xe</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile7">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile8">
 </head>
 <body>
   <div class="container">
@@ -196,9 +196,9 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
     <form method="post" action="save_actual_sale.php" id="actual-sale-form">
       <input type="hidden" name="khach_hang_id" value="<?php echo $customer['id']; ?>">
       <input type="hidden" name="ajax" value="1">
-      <div class="field">
+      <div class="field status-field">
         <label>Tr&#7841;ng th&#225;i b&#7889;c h&#224;ng</label>
-        <select name="trang_thai_boc" id="trang-thai-boc">
+        <select name="trang_thai_boc" id="trang-thai-boc" class="status-select">
           <option value="chua_boc" <?php echo ($customer['trang_thai_boc'] ?? 'chua_boc') === 'chua_boc' ? 'selected' : ''; ?>>Ch&#432;a B&#7889;c</option>
           <option value="xong" <?php echo ($customer['trang_thai_boc'] ?? 'chua_boc') === 'xong' ? 'selected' : ''; ?>>Xong</option>
         </select>
@@ -234,7 +234,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
     </form>
 
     <h2>So kh&#7899;p ph&#225;t sinh</h2>
-    <table>
+    <table class="compare-table">
       <thead>
         <tr>
           <th>Lo&#7841;i hoa/ch&#7853;u</th>
@@ -413,6 +413,11 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   </script>
 </body>
 </html>
+
+
+
+
+
 
 
 
