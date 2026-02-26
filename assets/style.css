@@ -596,7 +596,7 @@ table td {
 .compare-table td:nth-child(3),
 .compare-table th:nth-child(4),
 .compare-table td:nth-child(4) {
-  width: 92px;
+  width: 46px;
 }
 @media (max-width: 640px) {
   #actual-sale-form .status-select {
@@ -608,6 +608,7 @@ table td {
   .compare-table td:nth-child(3),
   .compare-table th:nth-child(4),
   .compare-table td:nth-child(4) {
-    width: 82px;
+    width: 41px;
   }
 }
+
