@@ -603,10 +603,10 @@ table td {
 .compare-table td:nth-child(3),
 .compare-table th:nth-child(4),
 .compare-table td:nth-child(4) {
-  width: 10%;
+  width: 15%;
   white-space: normal;
-  word-break: break-word;
-  padding: 6px 4px;
+  word-break: keep-all;
+  padding: 6px 6px;
 }
 .compare-table th:nth-child(5),
 .compare-table td:nth-child(5) {
@@ -623,8 +623,8 @@ table td {
   .compare-table td:nth-child(3),
   .compare-table th:nth-child(4),
   .compare-table td:nth-child(4) {
-    width: 9%;
-    padding: 5px 3px;
+    width: 14%;
+    padding: 5px 5px;
   }
   .compare-table th:nth-child(5),
   .compare-table td:nth-child(5) {
@@ -632,4 +632,11 @@ table td {
   }
 }
 
+
+
+.compare-table th:nth-child(2),
+.compare-table th:nth-child(3),
+.compare-table th:nth-child(4) {
+  line-height: 1.25;
+}
 
