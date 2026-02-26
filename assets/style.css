@@ -608,7 +608,10 @@ table td {
   word-break: keep-all;
   padding: 6px 6px;
 }
-.compare-table th:nth-child(5),`r`n.compare-table td:nth-child(5) {`r`n  width: 18% !important;`r`n}
+.compare-table th:nth-child(5),
+.compare-table td:nth-child(5) {
+  width: 18% !important;
+}
 @media (max-width: 640px) {
   .compare-table th:nth-child(1),
   .compare-table td:nth-child(1) {
@@ -765,6 +768,7 @@ $141%;
   white-space: normal !important;
   word-break: break-word;
 }
+
 
 
 
