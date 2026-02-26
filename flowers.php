@@ -91,7 +91,7 @@ function format_qty($value) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Quản lý loại hoa/chậu</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile1">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile12">
 </head>
 <body>
   <div class="container">
@@ -194,7 +194,7 @@ function format_qty($value) {
               </form>
             </td>
             <td>
-              <a class="danger" href="delete_flower.php?id=<?php echo $f['id']; ?>" onclick="return confirm('Bạn có chắc muốn xóa loại này?');">Xóa</a>
+              <a class="danger icon-trash flowers-delete-icon" href="delete_flower.php?id=<?php echo $f['id']; ?>" onclick="return confirm('Bạn có chắc muốn xóa loại này?');" aria-label="Xóa" title="Xóa"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg></a>
             </td>
           </tr>
         <?php endforeach; ?>
@@ -306,6 +306,7 @@ function format_qty($value) {
   </script>
 </body>
 </html>
+
 
 
 
