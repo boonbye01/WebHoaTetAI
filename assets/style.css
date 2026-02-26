@@ -660,20 +660,28 @@ table td {
   padding: 7px 10px;
 }
 .index-table td.ship-col .action-link.ship-btn {
-  color: #fff;
-  border-color: #0f766e;
-  background: linear-gradient(135deg, #0ea5a4, #0b7a75);
-  box-shadow: 0 3px 10px rgba(11, 122, 117, 0.25);
+  color: #0f9d58;
+  border-color: #b7e1c1;
+  background: #e8f5e9;
+  border-radius: 999px;
+  text-decoration: none !important;
+  box-shadow: none;
   font-weight: 700;
 }
 .index-table td.ship-col .action-link.ship-btn:hover {
-  background: linear-gradient(135deg, #14b8a6, #0d9488);
-  border-color: #0d9488;
-  box-shadow: 0 5px 12px rgba(13, 148, 136, 0.28);
-  transform: translateY(-1px);
+  color: #0b8043;
+  background: #dff1e3;
+  border-color: #a8d5b5;
+  text-decoration: none !important;
+  box-shadow: none;
+  transform: none;
+}
+.index-table td.ship-col .action-link.ship-btn:focus,
+.index-table td.ship-col .action-link.ship-btn:visited {
+  text-decoration: none !important;
 }
 .index-table td.ship-col .action-link.ship-btn:active {
-  transform: translateY(0);
+  transform: none;
 }
 .index-table .actions-col {
   min-width: 44px;
