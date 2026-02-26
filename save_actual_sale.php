@@ -19,6 +19,17 @@ function parse_money_input($value) {
     return (float)$clean;
 }
 
+function parse_datetime_input($value) {
+    $value = trim((string)$value);
+    if ($value === '') {
+        return date('Y-m-d H:i:s');
+    }
+    if (preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/', $value) === 1) {
+        return str_replace('T', ' ', $value) . ':00';
+    }
+    return date('Y-m-d H:i:s');
+}
+
 $pdo = db();
 $customer_id = isset($_POST['khach_hang_id']) ? (int)$_POST['khach_hang_id'] : 0;
 $items = $_POST['items'] ?? [];
@@ -61,13 +72,14 @@ try {
 
     $insert = $pdo->prepare(
         'INSERT INTO khach_hang_hoa_thuc_te (khach_hang_id, loai_hoa_id, so_luong, gia, created_at, updated_at)
-         VALUES (?, ?, ?, ?, NOW(), NOW())'
+         VALUES (?, ?, ?, ?, ?, NOW())'
     );
 
     foreach ($items as $item) {
         $flower_id = isset($item['loai_hoa_id']) ? (int)$item['loai_hoa_id'] : 0;
         $qty = isset($item['so_luong']) ? trim((string)$item['so_luong']) : '';
         $price = isset($item['gia']) ? trim((string)$item['gia']) : '';
+        $time_input = isset($item['thoi_gian']) ? (string)$item['thoi_gian'] : '';
 
         if ($flower_id <= 0 || $qty === '') {
             continue;
@@ -83,7 +95,8 @@ try {
             $price_value = 0;
         }
 
-        $insert->execute([$customer_id, $flower_id, $qty_value, $price_value]);
+        $created_at_value = parse_datetime_input($time_input);
+        $insert->execute([$customer_id, $flower_id, $qty_value, $price_value, $created_at_value]);
     }
 
     $pdo->commit();

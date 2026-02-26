@@ -37,7 +37,12 @@ $plan_stmt = $pdo->prepare(
 $plan_stmt->execute([$customer_id]);
 $plan_rows = $plan_stmt->fetchAll();
 
-$actual_stmt = $pdo->prepare('SELECT id, loai_hoa_id, so_luong, gia FROM khach_hang_hoa_thuc_te WHERE khach_hang_id = ? ORDER BY id');
+$actual_stmt = $pdo->prepare(
+    'SELECT id, loai_hoa_id, so_luong, gia, DATE_FORMAT(created_at, "%Y-%m-%dT%H:%i") AS thoi_gian
+     FROM khach_hang_hoa_thuc_te
+     WHERE khach_hang_id = ?
+     ORDER BY id'
+);
 $actual_stmt->execute([$customer_id]);
 $actual_rows = $actual_stmt->fetchAll();
 
@@ -69,7 +74,7 @@ foreach ($plan_rows as $row) {
 }
 
 if (count($actual_rows) === 0) {
-    $actual_rows[] = ['id' => null, 'loai_hoa_id' => '', 'so_luong' => '', 'gia' => ''];
+    $actual_rows[] = ['id' => null, 'loai_hoa_id' => '', 'so_luong' => '', 'gia' => '', 'thoi_gian' => date('Y-m-d\TH:i')];
 }
 
 $actual_sum_stmt = $pdo->prepare(
@@ -153,7 +158,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ch&#7889;t b&#225;n Sau L&#234;n xe</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile10">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile20">
 </head>
 <body>
   <div class="container">
@@ -192,6 +197,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
         <div>Loại</div>
         <div>Số lượng</div>
         <div>Giá (VND)</div>
+        <div>Thời gian</div>
         <div></div>
       </div>
       <div id="actual-items">
@@ -207,6 +213,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
             </select>
             <input type="number" step="0.01" min="0" name="items[<?php echo $idx; ?>][so_luong]" value="<?php echo htmlspecialchars(format_decimal($row['so_luong'])); ?>" placeholder="S&#7889; l&#432;&#7907;ng" class="actual-qty">
             <input type="text" name="items[<?php echo $idx; ?>][gia]" value="<?php echo htmlspecialchars(format_decimal($row['gia'])); ?>" placeholder="Gi&#225; (VND)" class="actual-price currency-input">
+            <input type="datetime-local" name="items[<?php echo $idx; ?>][thoi_gian]" value="<?php echo htmlspecialchars($row['thoi_gian'] ?? date('Y-m-d\TH:i')); ?>" class="actual-time">
             <button type="button" class="remove-row-btn" onclick="removeActualRow(this)" aria-label="Xóa dòng" title="Xóa dòng"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg></button>
           </div>
         <?php endforeach; ?>
@@ -276,6 +283,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       </select>
       <input type="number" step="0.01" min="0" name="" placeholder="S&#7889; l&#432;&#7907;ng" class="actual-qty">
       <input type="text" name="" placeholder="Gi&#225; (VND)" class="actual-price currency-input">
+      <input type="datetime-local" name="" class="actual-time">
       <button type="button" class="remove-row-btn" onclick="removeActualRow(this)" aria-label="Xóa dòng" title="Xóa dòng"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg></button>
     </div>
   </template>
@@ -300,11 +308,22 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
         row.querySelector('.actual-select').name = `items[${index}][loai_hoa_id]`;
         row.querySelector('.actual-qty').name = `items[${index}][so_luong]`;
         row.querySelector('.actual-price').name = `items[${index}][gia]`;
+        row.querySelector('.actual-time').name = `items[${index}][thoi_gian]`;
       });
+    }
+
+    function nowDatetimeLocal() {
+      const d = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
     }
 
     function addActualRow() {
       const fragment = actualTemplate.content.cloneNode(true);
+      const timeInput = fragment.querySelector('.actual-time');
+      if (timeInput) {
+        timeInput.value = nowDatetimeLocal();
+      }
       actualItems.appendChild(fragment);
       reindexActualRows();
       dirty = true;
@@ -318,6 +337,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
         row.querySelector('.actual-select').value = '';
         row.querySelector('.actual-qty').value = '';
         row.querySelector('.actual-price').value = '';
+        row.querySelector('.actual-time').value = nowDatetimeLocal();
         dirty = true;
         scheduleSave();
         return;
@@ -363,14 +383,14 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
           e.target.setSelectionRange(e.target.value.length, e.target.value.length);
         }
       }
-      if (e.target.classList.contains('actual-select') || e.target.classList.contains('actual-qty') || e.target.classList.contains('actual-price')) {
+      if (e.target.classList.contains('actual-select') || e.target.classList.contains('actual-qty') || e.target.classList.contains('actual-price') || e.target.classList.contains('actual-time')) {
         dirty = true;
         scheduleSave();
       }
     });
 
     actualItems.addEventListener('change', (e) => {
-      if (e.target.classList.contains('actual-select') || e.target.classList.contains('actual-qty') || e.target.classList.contains('actual-price')) {
+      if (e.target.classList.contains('actual-select') || e.target.classList.contains('actual-qty') || e.target.classList.contains('actual-price') || e.target.classList.contains('actual-time')) {
         dirty = true;
         scheduleSave();
       }

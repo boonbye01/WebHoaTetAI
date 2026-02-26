@@ -507,11 +507,11 @@ table td {
 }
 #actual-sale-form .items-header.item-row,
 #actual-sale-form #actual-items .actual-row {
-  min-width: 470px;
+  min-width: 620px;
 }
 #actual-sale-form .actual-row {
   display: grid !important;
-  grid-template-columns: minmax(85px, 120px) 39px 96px 32px !important;
+  grid-template-columns: minmax(85px, 118px) 46px 90px 170px 32px !important;
   gap: 8px;
   align-items: center;
 }
@@ -553,8 +553,8 @@ table td {
 @media (max-width: 640px) {
   #actual-sale-form .actual-row,
   #actual-sale-form .items-header.item-row {
-    grid-template-columns: minmax(85px, 120px) 39px 90px 30px !important;
-    min-width: 470px;
+    grid-template-columns: minmax(85px, 118px) 44px 88px 160px 30px !important;
+    min-width: 600px;
   }
   .actual-sale-totals .field label {
     min-width: 150px;
