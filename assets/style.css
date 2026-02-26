@@ -590,17 +590,32 @@ table td {
   white-space: normal;
   line-height: 1.2;
 }
+.compare-table {
+  table-layout: fixed;
+}
+.compare-table th:nth-child(1),
+.compare-table td:nth-child(1) {
+  width: 32%;
+}
 .compare-table th:nth-child(2),
 .compare-table td:nth-child(2),
 .compare-table th:nth-child(3),
 .compare-table td:nth-child(3),
 .compare-table th:nth-child(4),
 .compare-table td:nth-child(4) {
-  width: 46px;
+  width: 10%;
+  white-space: normal;
+  word-break: break-word;
+  padding: 6px 4px;
+}
+.compare-table th:nth-child(5),
+.compare-table td:nth-child(5) {
+  width: 18%;
 }
 @media (max-width: 640px) {
-  #actual-sale-form .status-select {
-    width: 150px;
+  .compare-table th:nth-child(1),
+  .compare-table td:nth-child(1) {
+    width: 36%;
   }
   .compare-table th:nth-child(2),
   .compare-table td:nth-child(2),
@@ -608,7 +623,13 @@ table td {
   .compare-table td:nth-child(3),
   .compare-table th:nth-child(4),
   .compare-table td:nth-child(4) {
-    width: 41px;
+    width: 9%;
+    padding: 5px 3px;
+  }
+  .compare-table th:nth-child(5),
+  .compare-table td:nth-child(5) {
+    width: 19%;
   }
 }
+
 
