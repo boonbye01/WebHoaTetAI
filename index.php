@@ -28,7 +28,7 @@ function format_decimal($value) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Quản lý hoa Tết</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile11">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile18">
 </head>
 <body>
   <div class="container">
@@ -54,6 +54,7 @@ function format_decimal($value) {
       <thead>
         <tr>
           <th>Tên Khách hàng</th>
+          <th class="ship-col">Giao Hàng</th>
           <th>Số điện thoại</th>
           <th>Địa chỉ</th>
           <th>Trạng thái</th>
@@ -63,11 +64,14 @@ function format_decimal($value) {
       </thead>
       <tbody>
       <?php if (count($customers) === 0): ?>
-        <tr><td colspan="6">Chưa có khách hàng.</td></tr>
+        <tr><td colspan="7">Chưa có khách hàng.</td></tr>
       <?php else: ?>
         <?php foreach ($customers as $c): ?>
           <tr class="customer-row" data-name="<?php echo htmlspecialchars($c['ten']); ?>">
             <td><a class="customer-name-link" href="customer_form.php?id=<?php echo $c['id']; ?>"><?php echo htmlspecialchars($c['ten']); ?></a></td>
+            <td class="ship-col">
+              <a class="action-link" href="actual_sale_form.php?id=<?php echo $c['id']; ?>">Giao Hàng</a>
+            </td>
             <td><?php echo htmlspecialchars($c['sdt']); ?></td>
             <td><?php echo htmlspecialchars($c['dia_chi']); ?></td>
             <td>
@@ -80,7 +84,6 @@ function format_decimal($value) {
             <td class="quantity-col"><?php echo htmlspecialchars(format_decimal(total_quantity($pdo, $c['id']))); ?></td>
             <td>
               <div class="row-actions">
-                <a class="action-link" href="actual_sale_form.php?id=<?php echo $c['id']; ?>">Giao Hàng</a>
                 <a class="action-link danger icon-trash" href="delete_customer.php?id=<?php echo $c['id']; ?>" onclick="return confirm('Bạn có chắc muốn xóa khách hàng này?');" aria-label="Xóa" title="Xóa">
                   <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg>
                 </a>

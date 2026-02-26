@@ -650,17 +650,24 @@ table td {
   white-space: nowrap;
   text-align: center;
 }
+.index-table .ship-col {
+  width: 108px;
+  min-width: 108px;
+  text-align: center;
+}
+.index-table td.ship-col .action-link {
+  min-width: 92px;
+  padding: 7px 10px;
+}
 .index-table .actions-col {
-  min-width: 130px;
-  width: 130px;
+  min-width: 44px;
+  width: 44px;
+  text-align: center;
 }
 .index-table .row-actions {
   flex-wrap: nowrap !important;
-  gap: 8px;
-}
-.index-table .row-actions .action-link {
-  min-width: 86px;
-  padding: 7px 10px;
+  gap: 0;
+  justify-content: center;
 }
 .index-table .row-actions .icon-trash {
   min-width: 30px;
@@ -678,9 +685,13 @@ table td {
   display: block;
 }
 @media (max-width: 640px) {
+  .index-table .ship-col {
+    width: 102px;
+    min-width: 102px;
+  }
   .index-table .actions-col {
-    min-width: 118px;
-    width: 118px;
+    min-width: 40px;
+    width: 40px;
   }
   .index-table .row-actions {
     flex-wrap: nowrap !important;
