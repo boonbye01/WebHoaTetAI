@@ -397,11 +397,11 @@ table td {
 }
 #customer-form .items-header.item-row,
 #customer-form #items .item-row {
-  min-width: 690px;
+  min-width: 560px;
 }
 #customer-form .item-row {
   display: grid !important;
-  grid-template-columns: minmax(150px, 200px) 72px 110px 100px 36px !important;
+  grid-template-columns: minmax(118px, 150px) 68px 100px 92px 34px !important;
   gap: 6px;
   align-items: center;
 }
@@ -443,8 +443,13 @@ table td {
   #customer-form .item-row,
   #customer-form .items-header.item-row {
     display: grid !important;
-    grid-template-columns: minmax(150px, 200px) 68px 100px 92px 34px !important;
+    grid-template-columns: minmax(118px, 142px) 64px 94px 88px 32px !important;
     min-width: 640px;
   }
+}
+
+
+#customer-form .flower-select {
+  font-size: 12px;
 }
 
