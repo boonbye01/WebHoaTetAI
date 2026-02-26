@@ -604,7 +604,7 @@ table td {
 .compare-table td:nth-child(3),
 .compare-table th:nth-child(4),
 .compare-table td:nth-child(4) {
-  width: 120px;
+  width: 84px;
   white-space: normal;
   word-break: keep-all;
   padding: 6px 6px;
@@ -624,7 +624,7 @@ table td {
   .compare-table td:nth-child(3),
   .compare-table th:nth-child(4),
   .compare-table td:nth-child(4) {
-    width: 115px;
+    width: 80px;
     padding: 5px 5px;
   }
   .compare-table th:nth-child(5),
