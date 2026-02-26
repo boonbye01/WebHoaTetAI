@@ -91,7 +91,7 @@ function format_qty($value) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Quản lý loại hoa/chậu</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile12">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile13">
 </head>
 <body>
   <div class="container">
@@ -203,7 +203,7 @@ function format_qty($value) {
     </table>
 
     <h2>Thống kê 1: Số lượng sau khi khách hàng CỌC</h2>
-    <table>
+    <table class="stats-table-1">
       <thead>
         <tr>
           <th>Loại chậu/hoa</th>
@@ -231,7 +231,7 @@ function format_qty($value) {
     </table>
 
     <h2>Thống kê 2: Số lượng sau khi lên xe</h2>
-    <table>
+    <table class="stats-table-2">
       <thead>
         <tr>
           <th>Loại chậu/hoa</th>
@@ -306,6 +306,7 @@ function format_qty($value) {
   </script>
 </body>
 </html>
+
 
 
 
