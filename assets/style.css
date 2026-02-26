@@ -389,20 +389,25 @@ table td {
 }
 
 /* customer-form horizontal row tuning */
-#customer-form #items,
-#customer-form .items-header.item-row {
-  min-width: 690px;
-}
 #customer-form #items {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
   padding-bottom: 4px;
 }
+#customer-form .items-header.item-row,
+#customer-form #items .item-row {
+  min-width: 690px;
+}
 #customer-form .item-row {
-  grid-template-columns: minmax(150px, 200px) 72px 110px 100px 36px;
+  display: grid !important;
+  grid-template-columns: minmax(150px, 200px) 72px 110px 100px 36px !important;
   gap: 6px;
+  align-items: center;
 }
 #customer-form .item-row select,
 #customer-form .item-row input {
+  width: 100%;
   padding: 6px 8px;
   font-size: 13px;
 }
@@ -418,13 +423,18 @@ table td {
   border-radius: 6px;
   background: #fff1f0;
   color: #d93025;
-  font-size: 16px;
-  line-height: 1;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0;
+  line-height: 1;
+}
+.remove-row-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  display: block;
 }
 .remove-row-btn:hover {
   background: #ffe4e1;
@@ -432,6 +442,9 @@ table td {
 @media (max-width: 640px) {
   #customer-form .item-row,
   #customer-form .items-header.item-row {
-    grid-template-columns: minmax(150px, 200px) 68px 100px 92px 34px;
+    display: grid !important;
+    grid-template-columns: minmax(150px, 200px) 68px 100px 92px 34px !important;
+    min-width: 640px;
   }
 }
+
