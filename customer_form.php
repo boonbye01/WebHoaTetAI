@@ -49,7 +49,7 @@ if (count($items) === 0) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?php echo $khach_hang['id'] ? 'Sửa khách hàng' : 'Thêm khách hàng'; ?></title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile3">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile4">
 </head>
 <body>
   <div class="container">
@@ -86,6 +86,7 @@ if (count($items) === 0) {
       </div>
 
       <h2>Loại hoa/chậu</h2>
+      <div class="items-scroll-wrap">
       <div class="items-header item-row">
         <div>Loại</div>
         <div>Số lượng</div>
@@ -110,6 +111,7 @@ if (count($items) === 0) {
             <button type="button" class="remove-row-btn" onclick="removeRow(this)" aria-label="Xóa dòng" title="Xóa dòng"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg></button>
           </div>
         <?php endforeach; ?>
+      </div>
       </div>
 
       <div class="actions">
@@ -151,6 +153,10 @@ if (count($items) === 0) {
   <script src="assets/app.js?v=20260226_2"></script>
 </body>
 </html>
+
+
+
+
 
 
 

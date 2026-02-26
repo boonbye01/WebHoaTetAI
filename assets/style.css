@@ -389,7 +389,7 @@ table td {
 }
 
 /* customer-form horizontal row tuning */
-#customer-form #items {
+#customer-form .items-scroll-wrap {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   white-space: nowrap;
@@ -397,11 +397,11 @@ table td {
 }
 #customer-form .items-header.item-row,
 #customer-form #items .item-row {
-  min-width: 560px;
+  min-width: 520px;
 }
 #customer-form .item-row {
   display: grid !important;
-  grid-template-columns: minmax(118px, 150px) 68px 100px 92px 34px !important;
+  grid-template-columns: minmax(100px, 142px) 55px 100px 92px 34px !important;
   gap: 6px;
   align-items: center;
 }
@@ -443,7 +443,7 @@ table td {
   #customer-form .item-row,
   #customer-form .items-header.item-row {
     display: grid !important;
-    grid-template-columns: minmax(118px, 142px) 64px 94px 88px 32px !important;
+    grid-template-columns: minmax(100px, 142px) 55px 94px 88px 32px !important;
     min-width: 640px;
   }
 }
@@ -452,4 +452,5 @@ table td {
 #customer-form .flower-select {
   font-size: 12px;
 }
+
 
