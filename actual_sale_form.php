@@ -68,22 +68,6 @@ foreach ($plan_rows as $row) {
     $total_plan_amount += $amount;
 }
 
-if (count($actual_rows) === 0 && count($plan_rows) > 0) {
-    foreach ($plan_rows as $row) {
-        $qty = (float)$row['so_luong'];
-        $unit_price = 0;
-        if ($qty > 0) {
-            $unit_price = (float)$row['thanh_tien'] / $qty;
-        }
-        $actual_rows[] = [
-            'id' => null,
-            'loai_hoa_id' => (int)$row['loai_hoa_id'],
-            'so_luong' => format_decimal($qty),
-            'gia' => format_decimal($unit_price),
-        ];
-    }
-}
-
 if (count($actual_rows) === 0) {
     $actual_rows[] = ['id' => null, 'loai_hoa_id' => '', 'so_luong' => '', 'gia' => ''];
 }
