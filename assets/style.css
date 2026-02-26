@@ -715,7 +715,7 @@ table td {
 /* Thong ke 1 */
 .stats-table-1 th:nth-child(1),
 .stats-table-1 td:nth-child(1) {
-  width: 16%;
+  width: 20% !important;
 }
 .stats-table-1 th:nth-child(2),
 .stats-table-1 td:nth-child(2),
@@ -723,11 +723,11 @@ table td {
 .stats-table-1 td:nth-child(3),
 .stats-table-1 th:nth-child(4),
 .stats-table-1 td:nth-child(4) {
-  width: 12% !important;
+  width: 20% !important;
 }
 .stats-table-1 th:nth-child(5),
 .stats-table-1 td:nth-child(5) {
-  width: 48% !important;
+  width: 20% !important;
   white-space: nowrap !important;
   word-break: normal !important;
   overflow-wrap: normal !important;
@@ -757,12 +757,12 @@ table td {
   .stats-table-1 td:nth-child(3),
   .stats-table-1 th:nth-child(4),
   .stats-table-1 td:nth-child(4) {
-    width: 12% !important;
+    width: 20% !important;
     padding: 5px 4px;
   }
   .stats-table-1 th:nth-child(5),
   .stats-table-1 td:nth-child(5) {
-    width: 44% !important;
+    width: 20% !important;
     padding: 5px 4px;
     white-space: nowrap !important;
     word-break: normal !important;
@@ -795,6 +795,8 @@ table td {
 .stats-table-1 td:nth-child(5) {
   white-space: nowrap !important;
 }
+
+
 
 
 
