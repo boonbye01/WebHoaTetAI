@@ -397,11 +397,11 @@ table td {
 }
 #customer-form .items-header.item-row,
 #customer-form #items .item-row {
-  min-width: 470px;
+  min-width: 480px;
 }
 #customer-form .item-row {
   display: grid !important;
-  grid-template-columns: minmax(85px, 120px) 39px 96px 88px 32px !important;
+  grid-template-columns: minmax(85px, 120px) 49px 96px 88px 32px !important;
   gap: 8px;
   align-items: center;
 }
@@ -443,8 +443,8 @@ table td {
   #customer-form .item-row,
   #customer-form .items-header.item-row {
     display: grid !important;
-    grid-template-columns: minmax(85px, 120px) 39px 90px 84px 30px !important;
-    min-width: 470px;
+    grid-template-columns: minmax(85px, 120px) 49px 90px 84px 30px !important;
+    min-width: 480px;
   }
 }
 

@@ -49,7 +49,7 @@ if (count($items) === 0) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?php echo $khach_hang['id'] ? 'Sửa khách hàng' : 'Thêm khách hàng'; ?></title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile6">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile23">
 </head>
 <body>
   <div class="container">
