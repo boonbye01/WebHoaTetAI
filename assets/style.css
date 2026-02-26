@@ -622,7 +622,7 @@ table td {
   }
   .compare-table th:nth-child(1),
   .compare-table td:nth-child(1) {
-    width: 15% !important;
+    width: 10% !important;
   }
   .compare-table th:nth-child(2),
   .compare-table td:nth-child(2),
@@ -630,7 +630,7 @@ table td {
   .compare-table td:nth-child(3),
   .compare-table th:nth-child(4),
   .compare-table td:nth-child(4) {
-    width: 10% !important;
+    width: 5% !important;
     padding: 5px 5px;
   }
   .compare-table th:nth-child(5),
