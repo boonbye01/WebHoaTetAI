@@ -659,6 +659,22 @@ table td {
   min-width: 92px;
   padding: 7px 10px;
 }
+.index-table td.ship-col .action-link.ship-btn {
+  color: #fff;
+  border-color: #0f766e;
+  background: linear-gradient(135deg, #0ea5a4, #0b7a75);
+  box-shadow: 0 3px 10px rgba(11, 122, 117, 0.25);
+  font-weight: 700;
+}
+.index-table td.ship-col .action-link.ship-btn:hover {
+  background: linear-gradient(135deg, #14b8a6, #0d9488);
+  border-color: #0d9488;
+  box-shadow: 0 5px 12px rgba(13, 148, 136, 0.28);
+  transform: translateY(-1px);
+}
+.index-table td.ship-col .action-link.ship-btn:active {
+  transform: translateY(0);
+}
 .index-table .actions-col {
   min-width: 44px;
   width: 44px;

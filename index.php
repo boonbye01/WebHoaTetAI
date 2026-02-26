@@ -28,7 +28,7 @@ function format_decimal($value) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Quản lý hoa Tết</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile18">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile19">
 </head>
 <body>
   <div class="container">
@@ -70,7 +70,7 @@ function format_decimal($value) {
           <tr class="customer-row" data-name="<?php echo htmlspecialchars($c['ten']); ?>">
             <td><a class="customer-name-link" href="customer_form.php?id=<?php echo $c['id']; ?>"><?php echo htmlspecialchars($c['ten']); ?></a></td>
             <td class="ship-col">
-              <a class="action-link" href="actual_sale_form.php?id=<?php echo $c['id']; ?>">Giao Hàng</a>
+              <a class="action-link ship-btn" href="actual_sale_form.php?id=<?php echo $c['id']; ?>">Giao Hàng</a>
             </td>
             <td><?php echo htmlspecialchars($c['sdt']); ?></td>
             <td><?php echo htmlspecialchars($c['dia_chi']); ?></td>
