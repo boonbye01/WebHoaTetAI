@@ -660,18 +660,18 @@ table td {
   padding: 7px 10px;
 }
 .index-table td.ship-col .action-link.ship-btn {
-  color: #0f9d58;
-  border-color: #b7e1c1;
-  background: #e8f5e9;
+  color: #6d28d9;
+  border-color: #ddd6fe;
+  background: #f3e8ff;
   border-radius: 999px;
   text-decoration: none !important;
   box-shadow: none;
   font-weight: 700;
 }
 .index-table td.ship-col .action-link.ship-btn:hover {
-  color: #0b8043;
-  background: #dff1e3;
-  border-color: #a8d5b5;
+  color: #5b21b6;
+  background: #ede9fe;
+  border-color: #c4b5fd;
   text-decoration: none !important;
   box-shadow: none;
   transform: none;
