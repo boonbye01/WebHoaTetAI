@@ -1,0 +1,5 @@
+﻿---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/pchanger68de/hoatet.pchanger.info/
+    - /bin/cp -R * $DEPLOYPATH
