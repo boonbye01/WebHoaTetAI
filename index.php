@@ -28,7 +28,7 @@ function format_decimal($value) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Quản lý hoa Tết</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile1">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile11">
 </head>
 <body>
   <div class="container">
@@ -50,14 +50,14 @@ function format_decimal($value) {
       <button type="button" class="button secondary" id="clear-search">Xóa lọc</button>
     </form>
 
-    <table>
+    <table class="index-table">
       <thead>
         <tr>
           <th>Tên Khách hàng</th>
           <th>Số điện thoại</th>
           <th>Địa chỉ</th>
           <th>Trạng thái</th>
-          <th>Tổng số lượng (Cặp)</th>
+          <th class="quantity-col">Tổng số lượng (Cặp)</th>
           <th class="actions-col">Thao tác</th>
         </tr>
       </thead>
@@ -77,13 +77,15 @@ function format_decimal($value) {
                 <span class="status-pill pending">Chưa Bốc</span>
               <?php endif; ?>
             </td>
-            <td><?php echo htmlspecialchars(format_decimal(total_quantity($pdo, $c['id']))); ?></td>
+            <td class="quantity-col"><?php echo htmlspecialchars(format_decimal(total_quantity($pdo, $c['id']))); ?></td>
             <td>
-  <div class="row-actions">
-    <a class="action-link" href="actual_sale_form.php?id=<?php echo $c['id']; ?>">Giao Hàng</a>
-    <a class="action-link danger" href="delete_customer.php?id=<?php echo $c['id']; ?>" onclick="return confirm('Bạn có chắc muốn xóa khách hàng này?');">Xóa</a>
-  </div>
-</td>
+              <div class="row-actions">
+                <a class="action-link" href="actual_sale_form.php?id=<?php echo $c['id']; ?>">Giao Hàng</a>
+                <a class="action-link danger icon-trash" href="delete_customer.php?id=<?php echo $c['id']; ?>" onclick="return confirm('Bạn có chắc muốn xóa khách hàng này?');" aria-label="Xóa" title="Xóa">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg>
+                </a>
+              </div>
+            </td>
           </tr>
         <?php endforeach; ?>
       <?php endif; ?>
@@ -128,12 +130,3 @@ function format_decimal($value) {
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-

@@ -640,3 +640,52 @@ table td {
   line-height: 1.25;
 }
 
+
+/* index-table compact tuning */
+.index-table {
+  table-layout: fixed;
+}
+.index-table .quantity-col {
+  width: 44px;
+  white-space: nowrap;
+  text-align: center;
+}
+.index-table .actions-col {
+  min-width: 130px;
+  width: 130px;
+}
+.index-table .row-actions {
+  flex-wrap: nowrap !important;
+  gap: 8px;
+}
+.index-table .row-actions .action-link {
+  min-width: 86px;
+  padding: 7px 10px;
+}
+.index-table .row-actions .icon-trash {
+  min-width: 30px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.index-table .row-actions .icon-trash svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  display: block;
+}
+@media (max-width: 640px) {
+  .index-table .actions-col {
+    min-width: 118px;
+    width: 118px;
+  }
+  .index-table .row-actions {
+    flex-wrap: nowrap !important;
+  }
+  .index-table .quantity-col {
+    width: 38px;
+  }
+}
