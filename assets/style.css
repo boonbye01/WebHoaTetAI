@@ -497,3 +497,66 @@ table td {
     min-width: 130px;
   }
 }
+
+/* actual-sale-form horizontal row tuning */
+#actual-sale-form .actual-items-scroll-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+  padding-bottom: 4px;
+}
+#actual-sale-form .items-header.item-row,
+#actual-sale-form #actual-items .actual-row {
+  min-width: 470px;
+}
+#actual-sale-form .actual-row {
+  display: grid !important;
+  grid-template-columns: minmax(85px, 120px) 39px 96px 32px !important;
+  gap: 8px;
+  align-items: center;
+}
+#actual-sale-form .actual-row select,
+#actual-sale-form .actual-row input {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+#actual-sale-form .items-header.item-row div {
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.actual-sale-header {
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.actual-sale-header .actions {
+  margin-top: -4px;
+}
+.actual-sale-totals .field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0;
+}
+.actual-sale-totals .field label {
+  margin-bottom: 0;
+  white-space: nowrap;
+  font-size: 13px;
+  min-width: 160px;
+}
+.actual-sale-totals .field input[type="text"] {
+  flex: 1;
+}
+@media (max-width: 640px) {
+  #actual-sale-form .actual-row,
+  #actual-sale-form .items-header.item-row {
+    grid-template-columns: minmax(85px, 120px) 39px 90px 30px !important;
+    min-width: 470px;
+  }
+  .actual-sale-totals .field label {
+    min-width: 150px;
+  }
+}

@@ -169,11 +169,11 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ch&#7889;t b&#225;n Sau L&#234;n xe</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile1">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile7">
 </head>
 <body>
   <div class="container">
-    <header class="header">
+    <header class="header actual-sale-header">
       <h1>Ch&#7889;t b&#225;n Sau L&#234;n xe</h1>
       <div class="actions">
         <a class="button secondary" href="index.php">Quay l&#7841;i</a>
@@ -203,6 +203,13 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
           <option value="xong" <?php echo ($customer['trang_thai_boc'] ?? 'chua_boc') === 'xong' ? 'selected' : ''; ?>>Xong</option>
         </select>
       </div>
+      <div class="actual-items-scroll-wrap">
+      <div class="items-header item-row actual-row">
+        <div>Loại</div>
+        <div>Số lượng</div>
+        <div>Giá (VND)</div>
+        <div></div>
+      </div>
       <div id="actual-items">
         <?php foreach ($actual_rows as $idx => $row): ?>
           <div class="item-row actual-row">
@@ -216,10 +223,11 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
             </select>
             <input type="number" step="0.01" min="0" name="items[<?php echo $idx; ?>][so_luong]" value="<?php echo htmlspecialchars(format_decimal($row['so_luong'])); ?>" placeholder="S&#7889; l&#432;&#7907;ng" class="actual-qty">
             <input type="text" name="items[<?php echo $idx; ?>][gia]" value="<?php echo htmlspecialchars(format_decimal($row['gia'])); ?>" placeholder="Gi&#225; (VND)" class="actual-price currency-input">
-            <button type="button" class="button danger" onclick="removeActualRow(this)">X&#243;a d&#242;ng</button>
+            <button type="button" class="remove-row-btn" onclick="removeActualRow(this)" aria-label="Xóa dòng" title="Xóa dòng"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg></button>
           </div>
         <?php endforeach; ?>
       </div>
+            </div>
       <div class="actions">
         <button type="button" class="button secondary" onclick="addActualRow()">Th&#234;m d&#242;ng Sau L&#234;n xe</button>
       </div>
@@ -258,7 +266,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       </tbody>
     </table>
 
-    <div class="totals-grid">
+    <div class="totals-grid actual-sale-totals">
       <div class="field">
         <label>T&#7893;ng ti&#7873;n hoa &#273;&#227; &#273;&#7863;t</label>
         <input type="text" value="<?php echo format_vnd($total_plan_amount); ?> VND" readonly>
@@ -284,7 +292,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       </select>
       <input type="number" step="0.01" min="0" name="" placeholder="S&#7889; l&#432;&#7907;ng" class="actual-qty">
       <input type="text" name="" placeholder="Gi&#225; (VND)" class="actual-price currency-input">
-      <button type="button" class="button danger" onclick="removeActualRow(this)">X&#243;a d&#242;ng</button>
+      <button type="button" class="remove-row-btn" onclick="removeActualRow(this)" aria-label="Xóa dòng" title="Xóa dòng"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg></button>
     </div>
   </template>
 
@@ -405,6 +413,10 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   </script>
 </body>
 </html>
+
+
+
+
 
 
 
