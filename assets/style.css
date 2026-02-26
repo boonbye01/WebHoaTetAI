@@ -608,9 +608,7 @@ table td {
   word-break: keep-all;
   padding: 6px 6px;
 }
-.compare-table th:nth-child(5),
-.compare-table td:nth-child(5) {
-  width: 27% !important;
+$118% !important;
 }
 @media (max-width: 640px) {
   .compare-table th:nth-child(1),
@@ -772,6 +770,7 @@ table td {
   white-space: normal !important;
   word-break: break-word;
 }
+
 
 
 
