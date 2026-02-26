@@ -1,0 +1,27 @@
+Log - WebHoaTetAI
+
+Status:
+- Created PHP + MySQL project at F:\Chatgpt\WebHoaTetAI
+- Added admin login system (login.php/logout.php) and auth guard
+- Added schema update for admin_user table
+- Config.php currently set to cPanel DB credentials
+
+Project files:
+- F:\Chatgpt\WebHoaTetAI\index.php
+- F:\Chatgpt\WebHoaTetAI\customer_form.php
+- F:\Chatgpt\WebHoaTetAI\flowers.php
+- F:\Chatgpt\WebHoaTetAI\auth.php
+- F:\Chatgpt\WebHoaTetAI\login.php
+- F:\Chatgpt\WebHoaTetAI\logout.php
+- F:\Chatgpt\WebHoaTetAI\schema.sql
+- F:\Chatgpt\WebHoaTetAI\config.php
+- F:\Chatgpt\WebHoaTetAI\README.txt
+
+Next steps (local):
+1) Ensure config.php matches local DB creds if testing locally.
+2) Import schema.sql and run admin_user CREATE TABLE if not yet.
+3) Open http://localhost/WebHoaTetAI/login.php after placing folder in XAMPP/WAMP web root.
+
+Notes:
+- Customer flower quantity uses DECIMAL(10,2)
+- Manage flowers first in flowers.php
