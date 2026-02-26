@@ -473,3 +473,27 @@ table td {
 
 
 
+
+#customer-form .totals-grid .field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0;
+}
+#customer-form .totals-grid .field label {
+  margin-bottom: 0;
+  white-space: nowrap;
+  font-size: 13px;
+  min-width: 140px;
+}
+#customer-form .totals-grid .field input[type="text"] {
+  flex: 1;
+}
+@media (max-width: 640px) {
+  #customer-form .totals-grid .field {
+    flex-direction: row;
+  }
+  #customer-form .totals-grid .field label {
+    min-width: 130px;
+  }
+}
