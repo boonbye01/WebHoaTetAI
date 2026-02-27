@@ -141,10 +141,15 @@ table td {
 }
 .table-inline-form {
   flex-wrap: nowrap;
+  white-space: nowrap;
 }
 .table-inline-form .auto-stock-input {
-  width: 60px !important;
-  flex: 0 0 60px;
+  width: 30px !important;
+  min-width: 30px !important;
+  max-width: 30px !important;
+  flex: 0 0 30px !important;
+  padding: 4px 2px !important;
+  text-align: center;
 }
 .customer-info-inline {
   display: grid;
@@ -377,15 +382,17 @@ table td {
   }
 
   .table-inline-form {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .table-inline-form input[type="number"] {
     width: 100%;
   }
   .table-inline-form .auto-stock-input {
-    width: 60px !important;
-    flex: 0 0 60px;
+    width: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    flex: 0 0 30px !important;
   }
   .table-inline-form .unit-suffix {
     display: inline-block;
