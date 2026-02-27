@@ -49,6 +49,7 @@ function ensure_merge_history_table($pdo) {
 $pdo = db();
 $customer_id = isset($_POST['khach_hang_id']) ? (int)$_POST['khach_hang_id'] : 0;
 $items = $_POST['items'] ?? [];
+$merge_history_payload = isset($_POST['merge_history_payload']) ? (string)$_POST['merge_history_payload'] : '';
 $trang_thai_boc = $_POST['trang_thai_boc'] ?? 'chua_boc';
 // Tell frontend to reload once when duplicate flower rows are merged.
 $merged_rows_detected = false;
@@ -173,6 +174,25 @@ try {
                 $row['price'],
                 $row['time'],
             ]);
+        }
+    }
+
+    // Persist merge history coming from client-side instant merge.
+    $payload_rows = json_decode($merge_history_payload, true);
+    if (is_array($payload_rows) && count($payload_rows) > 0) {
+        foreach ($payload_rows as $prow) {
+            $flower_id = isset($prow['loai_hoa_id']) ? (int)$prow['loai_hoa_id'] : 0;
+            $qty_value = isset($prow['so_luong']) ? (float)$prow['so_luong'] : 0;
+            $price_value = isset($prow['gia']) ? (float)$prow['gia'] : 0;
+            $time_value = parse_datetime_input(isset($prow['thoi_gian']) ? (string)$prow['thoi_gian'] : '');
+            if ($flower_id <= 0 || $qty_value <= 0) {
+                continue;
+            }
+            if ($price_value < 0) {
+                $price_value = 0;
+            }
+            $insert_history->execute([$customer_id, $flower_id, $qty_value, $price_value, $time_value]);
+            $merged_rows_detected = true;
         }
     }
 

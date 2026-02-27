@@ -186,7 +186,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ch&#7889;t b&#225;n Sau L&#234;n xe</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile38">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile39">
 </head>
 <body>
   <div class="container">
@@ -213,6 +213,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
     <form method="post" action="save_actual_sale.php" id="actual-sale-form">
       <input type="hidden" name="khach_hang_id" value="<?php echo $customer['id']; ?>">
       <input type="hidden" name="ajax" value="1">
+      <input type="hidden" name="merge_history_payload" id="merge-history-payload" value="">
       <div class="field status-field">
         <label>Tr&#7841;ng th&#225;i b&#7889;c h&#224;ng</label>
         <select name="trang_thai_boc" id="trang-thai-boc" class="status-select">
@@ -347,9 +348,11 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
     const actualItems = document.getElementById('actual-items');
     const actualTemplate = document.getElementById('actual-row-template');
     const actualForm = document.getElementById('actual-sale-form');
+    const mergeHistoryPayloadInput = document.getElementById('merge-history-payload');
     let saveTimer = null;
     let saving = false;
     let dirty = false;
+    let mergeHistoryBuffer = [];
 
     function formatVndInput(value) {
       const n = String(value || '').replace(/[^0-9]/g, '');
@@ -421,6 +424,23 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
         const keepTime = keep.querySelector('.actual-time');
         const mergedPrice = sumQty > 0 ? Math.round(sumAmount / sumQty) : 0;
 
+        groupRows.forEach((row) => {
+          const qtyInput = row.querySelector('.actual-qty');
+          const priceInput = row.querySelector('.actual-price');
+          const timeInput = row.querySelector('.actual-time');
+          const qty = Number(qtyInput && qtyInput.value ? qtyInput.value : 0);
+          const price = parsePriceValue(priceInput ? priceInput.value : '');
+          const timeValue = (timeInput && timeInput.value) ? timeInput.value : nowDatetimeLocal();
+          if (qty > 0) {
+            mergeHistoryBuffer.push({
+              loai_hoa_id: Number(keep.querySelector('.actual-select').value || 0),
+              so_luong: qty,
+              gia: price,
+              thoi_gian: timeValue,
+            });
+          }
+        });
+
         if (keepQty) keepQty.value = sumQty > 0 ? String(sumQty) : '';
         if (keepPrice) keepPrice.value = mergedPrice > 0 ? formatVndInput(String(mergedPrice)) : '';
         if (keepTime) keepTime.value = latestTime || nowDatetimeLocal();
@@ -471,6 +491,9 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       if (saving || !dirty) return;
       saving = true;
       try {
+        if (mergeHistoryPayloadInput) {
+          mergeHistoryPayloadInput.value = JSON.stringify(mergeHistoryBuffer);
+        }
         const formData = new FormData(actualForm);
         const response = await fetch('save_actual_sale.php', {
           method: 'POST',
@@ -482,6 +505,10 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
         if (response.ok) {
           const result = await response.json().catch(() => ({}));
           dirty = false;
+          mergeHistoryBuffer = [];
+          if (mergeHistoryPayloadInput) {
+            mergeHistoryPayloadInput.value = '';
+          }
           if (result && result.merged) {
             window.location.reload();
             return;
