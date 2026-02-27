@@ -204,6 +204,7 @@ function format_qty($value) {
                 <input type="hidden" name="id" value="<?php echo $f['id']; ?>">
                 <input type="hidden" name="ten" value="<?php echo htmlspecialchars($f['ten']); ?>">
                 <input type="number" step="0.01" min="0" name="so_luong_ban_dau" required value="<?php echo htmlspecialchars(format_qty($f['so_luong_ban_dau'])); ?>" class="auto-stock-input">
+                <span class="unit-suffix">/Cặp</span>
               </form>
             </td>
             <td>
