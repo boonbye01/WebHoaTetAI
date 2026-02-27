@@ -144,9 +144,20 @@ try {
     }
 
     foreach ($grouped as $flower_id => $rows) {
-        if (count($rows) === 1) {
-            $row = $rows[0];
-            $insert->execute([$customer_id, $flower_id, $row['qty'], $row['price'], $row['time']]);
+        $mergeable_rows = [];
+        $pending_rows = [];
+        foreach ($rows as $row) {
+            if ((float)$row['price'] > 0) {
+                $mergeable_rows[] = $row;
+            } else {
+                $pending_rows[] = $row;
+            }
+        }
+
+        if (count($mergeable_rows) <= 1) {
+            foreach ($rows as $row) {
+                $insert->execute([$customer_id, $flower_id, $row['qty'], $row['price'], $row['time']]);
+            }
             continue;
         }
 
@@ -154,8 +165,8 @@ try {
 
         $sum_qty = 0.0;
         $sum_amount = 0.0;
-        $latest_time = $rows[0]['time'];
-        foreach ($rows as $row) {
+        $latest_time = $mergeable_rows[0]['time'];
+        foreach ($mergeable_rows as $row) {
             $sum_qty += (float)$row['qty'];
             $sum_amount += (float)$row['qty'] * (float)$row['price'];
             if (strtotime($row['time']) > strtotime($latest_time)) {
@@ -165,8 +176,12 @@ try {
         $merged_price = $sum_qty > 0 ? round($sum_amount / $sum_qty, 2) : 0;
         $insert->execute([$customer_id, $flower_id, $sum_qty, $merged_price, $latest_time]);
 
+        foreach ($pending_rows as $row) {
+            $insert->execute([$customer_id, $flower_id, $row['qty'], $row['price'], $row['time']]);
+        }
+
         $delete_history_by_flower->execute([$customer_id, $flower_id]);
-        foreach ($rows as $row) {
+        foreach ($mergeable_rows as $row) {
             $insert_history->execute([
                 $customer_id,
                 $flower_id,

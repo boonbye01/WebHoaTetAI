@@ -187,7 +187,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ch&#7889;t b&#225;n Sau L&#234;n xe</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile41">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile42">
 </head>
 <body>
   <div class="container">
@@ -622,7 +622,10 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
           },
           body: params.toString()
         });
-        if (!res.ok) return;
+        if (!res.ok) {
+          window.location.href = `delete_merge_history.php?id=${encodeURIComponent(historyId)}&khach_hang_id=<?php echo (int)$customer['id']; ?>&return_id=<?php echo (int)$customer['id']; ?>`;
+          return;
+        }
         const row = btn.closest('li');
         if (!row) return;
         const list = row.parentElement;
