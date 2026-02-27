@@ -41,6 +41,18 @@ CREATE TABLE khach_hang_hoa_thuc_te (
   CONSTRAINT fk_lh_thuc_te FOREIGN KEY (loai_hoa_id) REFERENCES loai_hoa(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
+CREATE TABLE khach_hang_hoa_thuc_te_gop_lich_su (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  khach_hang_id INT NOT NULL,
+  loai_hoa_id INT NOT NULL,
+  so_luong DECIMAL(10,2) NOT NULL DEFAULT 0,
+  gia DECIMAL(12,2) NOT NULL DEFAULT 0,
+  thoi_gian DATETIME NOT NULL,
+  created_at DATETIME NOT NULL,
+  KEY idx_kh_gop_lich_su_khach_hang (khach_hang_id),
+  KEY idx_kh_gop_lich_su_loai_hoa (loai_hoa_id)
+) ENGINE=InnoDB;
+
 CREATE TABLE admin_user (
   id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(100) NOT NULL UNIQUE,

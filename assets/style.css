@@ -665,6 +665,39 @@ table td {
   line-height: 1.25;
 }
 
+.merge-history-box {
+  margin: -2px 0 10px;
+  padding: 0 4px 6px;
+}
+.toggle-merge-history {
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #374151;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.toggle-merge-history:hover {
+  background: #f3f4f6;
+}
+.merge-history-list {
+  margin-top: 6px;
+  background: #f8fbff;
+  border: 1px solid #dbeafe;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.merge-history-list ul {
+  margin: 0;
+  padding-left: 16px;
+}
+.merge-history-list li {
+  font-size: 12px;
+  line-height: 1.45;
+  color: #374151;
+}
+
 
 /* index-table compact tuning */
 .index-table {

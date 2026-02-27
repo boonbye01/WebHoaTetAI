@@ -30,10 +30,28 @@ function parse_datetime_input($value) {
     return date('Y-m-d H:i:s');
 }
 
+function ensure_merge_history_table($pdo) {
+    $pdo->exec(
+        "CREATE TABLE IF NOT EXISTS khach_hang_hoa_thuc_te_gop_lich_su (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            khach_hang_id INT NOT NULL,
+            loai_hoa_id INT NOT NULL,
+            so_luong DECIMAL(10,2) NOT NULL DEFAULT 0,
+            gia DECIMAL(12,2) NOT NULL DEFAULT 0,
+            thoi_gian DATETIME NOT NULL,
+            created_at DATETIME NOT NULL,
+            KEY idx_kh_gop_lich_su_khach_hang (khach_hang_id),
+            KEY idx_kh_gop_lich_su_loai_hoa (loai_hoa_id)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
+    );
+}
+
 $pdo = db();
 $customer_id = isset($_POST['khach_hang_id']) ? (int)$_POST['khach_hang_id'] : 0;
 $items = $_POST['items'] ?? [];
 $trang_thai_boc = $_POST['trang_thai_boc'] ?? 'chua_boc';
+// Tell frontend to reload once when duplicate flower rows are merged.
+$merged_rows_detected = false;
 if ($trang_thai_boc !== 'xong') {
     $trang_thai_boc = 'chua_boc';
 }
@@ -64,6 +82,8 @@ if (!$check->fetch()) {
 
 $pdo->beginTransaction();
 try {
+    ensure_merge_history_table($pdo);
+
     $update_customer = $pdo->prepare('UPDATE khach_hang SET trang_thai_boc = ?, updated_at = NOW() WHERE id = ?');
     $update_customer->execute([$trang_thai_boc, $customer_id]);
 
@@ -75,6 +95,15 @@ try {
          VALUES (?, ?, ?, ?, ?, NOW())'
     );
 
+    $insert_history = $pdo->prepare(
+        'INSERT INTO khach_hang_hoa_thuc_te_gop_lich_su (khach_hang_id, loai_hoa_id, so_luong, gia, thoi_gian, created_at)
+         VALUES (?, ?, ?, ?, ?, NOW())'
+    );
+    $delete_history_by_flower = $pdo->prepare(
+        'DELETE FROM khach_hang_hoa_thuc_te_gop_lich_su WHERE khach_hang_id = ? AND loai_hoa_id = ?'
+    );
+
+    $valid_rows = [];
     foreach ($items as $item) {
         $flower_id = isset($item['loai_hoa_id']) ? (int)$item['loai_hoa_id'] : 0;
         $qty = isset($item['so_luong']) ? trim((string)$item['so_luong']) : '';
@@ -96,7 +125,55 @@ try {
         }
 
         $created_at_value = parse_datetime_input($time_input);
-        $insert->execute([$customer_id, $flower_id, $qty_value, $price_value, $created_at_value]);
+        $valid_rows[] = [
+            'flower_id' => $flower_id,
+            'qty' => $qty_value,
+            'price' => $price_value,
+            'time' => $created_at_value,
+        ];
+    }
+
+    $grouped = [];
+    foreach ($valid_rows as $row) {
+        $flower_id = $row['flower_id'];
+        if (!isset($grouped[$flower_id])) {
+            $grouped[$flower_id] = [];
+        }
+        $grouped[$flower_id][] = $row;
+    }
+
+    foreach ($grouped as $flower_id => $rows) {
+        if (count($rows) === 1) {
+            $row = $rows[0];
+            $insert->execute([$customer_id, $flower_id, $row['qty'], $row['price'], $row['time']]);
+            continue;
+        }
+
+        $merged_rows_detected = true;
+
+        $sum_qty = 0.0;
+        $sum_amount = 0.0;
+        $latest_time = $rows[0]['time'];
+        foreach ($rows as $row) {
+            $sum_qty += (float)$row['qty'];
+            $sum_amount += (float)$row['qty'] * (float)$row['price'];
+            if (strtotime($row['time']) > strtotime($latest_time)) {
+                $latest_time = $row['time'];
+            }
+        }
+        $merged_price = $sum_qty > 0 ? round($sum_amount / $sum_qty, 2) : 0;
+        $insert->execute([$customer_id, $flower_id, $sum_qty, $merged_price, $latest_time]);
+
+        $delete_history_by_flower->execute([$customer_id, $flower_id]);
+        foreach ($rows as $row) {
+            $insert_history->execute([
+                $customer_id,
+                $flower_id,
+                $row['qty'],
+                $row['price'],
+                $row['time'],
+            ]);
+        }
     }
 
     $pdo->commit();
@@ -115,7 +192,7 @@ try {
 
 if ($is_ajax) {
     header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['ok' => true]);
+    echo json_encode(['ok' => true, 'merged' => $merged_rows_detected]);
     exit;
 }
 

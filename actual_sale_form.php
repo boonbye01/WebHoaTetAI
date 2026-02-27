@@ -24,6 +24,11 @@ foreach ($flowers as $flower) {
     $flower_name_map[(int)$flower['id']] = $flower['ten'];
 }
 
+function merge_history_exists($pdo) {
+    $stmt = $pdo->query("SHOW TABLES LIKE 'khach_hang_hoa_thuc_te_gop_lich_su'");
+    return (bool)$stmt->fetchColumn();
+}
+
 $plan_stmt = $pdo->prepare(
     'SELECT kh.loai_hoa_id, l.ten,
             SUM(kh.so_luong) AS so_luong,
@@ -45,6 +50,29 @@ $actual_stmt = $pdo->prepare(
 );
 $actual_stmt->execute([$customer_id]);
 $actual_rows = $actual_stmt->fetchAll();
+
+$merge_history_map = [];
+if (merge_history_exists($pdo)) {
+    $history_stmt = $pdo->prepare(
+        'SELECT loai_hoa_id, so_luong, gia, DATE_FORMAT(thoi_gian, "%d/%m %H:%i") AS thoi_gian_hien_thi
+         FROM khach_hang_hoa_thuc_te_gop_lich_su
+         WHERE khach_hang_id = ?
+         ORDER BY loai_hoa_id, thoi_gian ASC, id ASC'
+    );
+    $history_stmt->execute([$customer_id]);
+    $history_rows = $history_stmt->fetchAll();
+    foreach ($history_rows as $hrow) {
+        $flower_id = (int)$hrow['loai_hoa_id'];
+        if (!isset($merge_history_map[$flower_id])) {
+            $merge_history_map[$flower_id] = [];
+        }
+        $merge_history_map[$flower_id][] = [
+            'so_luong' => (float)$hrow['so_luong'],
+            'gia' => (float)$hrow['gia'],
+            'thoi_gian' => $hrow['thoi_gian_hien_thi'],
+        ];
+    }
+}
 
 function format_decimal($value) {
     $str = (string)$value;
@@ -158,7 +186,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ch&#7889;t b&#225;n Sau L&#234;n xe</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile36">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile37">
 </head>
 <body>
   <div class="container">
@@ -202,6 +230,13 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       </div>
       <div id="actual-items">
         <?php foreach ($actual_rows as $idx => $row): ?>
+          <?php
+            $history_items = [];
+            $flower_id_for_history = isset($row['loai_hoa_id']) ? (int)$row['loai_hoa_id'] : 0;
+            if ($flower_id_for_history > 0 && isset($merge_history_map[$flower_id_for_history])) {
+              $history_items = $merge_history_map[$flower_id_for_history];
+            }
+          ?>
           <div class="item-row actual-row">
             <select name="items[<?php echo $idx; ?>][loai_hoa_id]" class="actual-select">
               <option value="">-- Ch&#7885;n lo&#7841;i --</option>
@@ -216,6 +251,24 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
             <input type="datetime-local" name="items[<?php echo $idx; ?>][thoi_gian]" value="<?php echo htmlspecialchars($row['thoi_gian'] ?? date('Y-m-d\TH:i')); ?>" class="actual-time">
             <button type="button" class="remove-row-btn" onclick="removeActualRow(this)" aria-label="Xóa dòng" title="Xóa dòng"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg></button>
           </div>
+          <?php if (count($history_items) > 0): ?>
+            <div class="merge-history-box">
+              <button type="button" class="toggle-merge-history" data-target="merge-history-<?php echo $idx; ?>" data-label="L&#7883;ch s&#7917; &#273;&#227; g&#7897;p (<?php echo count($history_items); ?>)">
+                L&#7883;ch s&#7917; &#273;&#227; g&#7897;p (<?php echo count($history_items); ?>)
+              </button>
+              <div class="merge-history-list" id="merge-history-<?php echo $idx; ?>" hidden>
+                <ul>
+                  <?php foreach ($history_items as $hitem): ?>
+                    <li>
+                      SL <?php echo htmlspecialchars(format_decimal($hitem['so_luong'])); ?> -
+                      Gi&#225; <?php echo htmlspecialchars(format_vnd($hitem['gia'])); ?> VND -
+                      <?php echo htmlspecialchars($hitem['thoi_gian']); ?>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              </div>
+            </div>
+          <?php endif; ?>
         <?php endforeach; ?>
       </div>
             </div>
@@ -363,7 +416,12 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
           }
         });
         if (response.ok) {
+          const result = await response.json().catch(() => ({}));
           dirty = false;
+          if (result && result.merged) {
+            window.location.reload();
+            return;
+          }
         }
       } catch (e) {
         console.error('Auto save actual sale failed', e);
@@ -413,6 +471,24 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
     });
 
     reindexActualRows();
+
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.toggle-merge-history');
+      if (!btn) return;
+      const targetId = btn.getAttribute('data-target');
+      if (!targetId) return;
+      const panel = document.getElementById(targetId);
+      if (!panel) return;
+      const isHidden = panel.hasAttribute('hidden');
+      if (isHidden) {
+        panel.removeAttribute('hidden');
+        btn.textContent = 'Đóng lịch sử gộp';
+      } else {
+        panel.setAttribute('hidden', 'hidden');
+        btn.textContent = btn.getAttribute('data-label') || 'Lịch sử đã gộp';
+      }
+    });
+
     setInterval(() => {
       autoSave();
     }, 3000);
