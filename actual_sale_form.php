@@ -157,13 +157,13 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ch&#7889;t b&#225;n Sau L&#234;n xe</title>
+  <title>Sau L&#234;n xe</title>
   <link rel="stylesheet" href="assets/style.css?v=20260226_mobile49">
 </head>
 <body>
   <div class="container">
     <header class="header actual-sale-header">
-      <h1>Ch&#7889;t b&#225;n Sau L&#234;n xe</h1>
+      <h1>Sau L&#234;n xe</h1>
       <div class="actions">
         <a class="button secondary" href="index.php">Quay l&#7841;i</a>
         <a class="button secondary" href="customer_form.php?id=<?php echo $customer['id']; ?>">&#272;&#417;n &#273;&#7863;t c&#7885;c</a>
@@ -171,7 +171,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
     </header>
 
     <?php if (isset($_GET['msg'])): ?>
-      <div class="notice">&#272;&#227; l&#432;u d&#7919; li&#7879;u b&#225;n Sau L&#234;n xe.</div>
+      <div class="notice">&#272;&#227; l&#432;u d&#7919; li&#7879;u Sau L&#234;n xe.</div>
     <?php endif; ?>
 
     <div class="customer-info-inline">
@@ -181,7 +181,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       <div><strong>&#272;&#227; c&#7885;c:</strong> <?php echo format_vnd($customer['coc']); ?> VND</div>
     </div>
 
-    <h2>Nh&#7853;p b&#225;n Sau L&#234;n xe</h2>
+    <h2>Nh&#7853;p Sau L&#234;n xe</h2>
     <form method="post" action="save_actual_sale.php" id="actual-sale-form">
       <input type="hidden" name="khach_hang_id" value="<?php echo $customer['id']; ?>">
       <input type="hidden" name="ajax" value="1">
