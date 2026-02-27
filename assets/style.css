@@ -139,6 +139,13 @@ table td {
   color: #6b7280;
   white-space: nowrap;
 }
+.table-inline-form {
+  flex-wrap: nowrap;
+}
+.table-inline-form .auto-stock-input {
+  width: 60px !important;
+  flex: 0 0 60px;
+}
 .customer-info-inline {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -375,6 +382,14 @@ table td {
 
   .table-inline-form input[type="number"] {
     width: 100%;
+  }
+  .table-inline-form .auto-stock-input {
+    width: 60px !important;
+    flex: 0 0 60px;
+  }
+  .table-inline-form .unit-suffix {
+    display: inline-block;
+    width: auto;
   }
 
   table {
