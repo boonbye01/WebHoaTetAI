@@ -69,7 +69,7 @@ $flowers = $pdo->query(
 
 $import_rows = $pdo->query(
     'SELECT n.id, n.ngay_nhap, n.so_luong_cap, n.don_gia_lay, n.ten_nha_vuon, n.coc, n.ghi_chu, l.ten AS ten_hoa,
-            (n.so_luong_cap * n.don_gia_lay) AS thanh_tien
+            ((n.so_luong_cap * n.don_gia_lay) - n.coc) AS thanh_tien
      FROM nhap_vuon_ngoai n
      JOIN loai_hoa l ON l.id = n.loai_hoa_id
      ORDER BY n.id DESC
@@ -97,7 +97,7 @@ function format_qty($value) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Quản lý loại hoa/chậu</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile17">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile18">
 </head>
 <body>
   <div class="container">
@@ -131,19 +131,23 @@ function format_qty($value) {
     <section class="import-panel" id="import-panel" <?php echo $import_open ? '' : 'hidden'; ?>>
       <h2>Nhập hoa từ vườn khác</h2>
       <form method="post" action="save_import_flower.php" class="inline-form import-form">
-        <select name="loai_hoa_id" required>
-          <option value="">-- Chọn chậu/hoa --</option>
-          <?php foreach ($flowers as $f): ?>
-            <option value="<?php echo $f['id']; ?>"><?php echo htmlspecialchars($f['ten']); ?></option>
-          <?php endforeach; ?>
-        </select>
-        <input type="number" step="0.01" min="0.01" name="so_luong_cap" required placeholder="SL Cặp">
-        <input type="text" name="don_gia_lay" inputmode="numeric" pattern="[0-9., ]*" required placeholder="Đơn giá lấy">
-        <input type="text" name="ten_nha_vuon" required placeholder="Tên nhà vườn">
-        <input type="text" name="coc" inputmode="numeric" pattern="[0-9., ]*" placeholder="Cọc">
-        <input type="text" name="ghi_chu" placeholder="Ghi chú (nếu có)">
-        <input type="date" name="ngay_nhap" value="<?php echo date('Y-m-d'); ?>" required>
-        <button type="submit" class="button">Lưu phiếu nhập</button>
+        <div class="import-form-row">
+          <select name="loai_hoa_id" required>
+            <option value="">-- Chọn chậu/hoa --</option>
+            <?php foreach ($flowers as $f): ?>
+              <option value="<?php echo $f['id']; ?>"><?php echo htmlspecialchars($f['ten']); ?></option>
+            <?php endforeach; ?>
+          </select>
+          <input type="number" step="0.01" min="0.01" name="so_luong_cap" required placeholder="SL Cặp">
+          <input type="text" name="don_gia_lay" inputmode="numeric" pattern="[0-9., ]*" required placeholder="Đơn giá lấy">
+          <input type="text" name="ten_nha_vuon" required placeholder="Tên nhà vườn">
+        </div>
+        <div class="import-form-row import-form-row-2">
+          <input type="text" name="coc" inputmode="numeric" pattern="[0-9., ]*" placeholder="Cọc">
+          <input type="text" name="ghi_chu" placeholder="Ghi chú (nếu có)">
+          <input type="date" name="ngay_nhap" value="<?php echo date('Y-m-d'); ?>" required>
+          <button type="submit" class="button">Lưu phiếu nhập</button>
+        </div>
       </form>
 
       <table>

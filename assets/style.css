@@ -315,6 +315,17 @@ table td {
 .import-form {
   flex-wrap: wrap;
 }
+.import-form .import-form-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+.import-form .import-form-row + .import-form-row {
+  margin-top: 8px;
+}
+.import-form .import-form-row-2 .button {
+  flex: 0 0 auto;
+}
 .import-form select,
 .import-form input {
   min-width: 140px;
@@ -385,6 +396,9 @@ table td {
 
   .import-panel {
     padding: 10px;
+  }
+  .import-form .import-form-row {
+    flex-wrap: wrap;
   }
 }
 
