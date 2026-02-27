@@ -28,7 +28,7 @@ function format_decimal($value) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Quản lý hoa Tết</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile23">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile24">
 </head>
 <body>
   <div class="container">
@@ -55,7 +55,7 @@ function format_decimal($value) {
       <thead>
         <tr>
           <th>Tên Khách hàng</th>
-          <th class="ship-col">Giao Hàng</th>
+          <th class="ship-col">Đặt cọc</th>
           <th>Trạng thái</th>
           <th>Số điện thoại</th>
           <th>Địa chỉ</th>
@@ -69,9 +69,9 @@ function format_decimal($value) {
       <?php else: ?>
         <?php foreach ($customers as $c): ?>
           <tr class="customer-row" data-name="<?php echo htmlspecialchars($c['ten']); ?>" data-status="<?php echo (($c['trang_thai_boc'] ?? 'chua_boc') === 'xong') ? 'xong' : 'chua_boc'; ?>">
-            <td><a class="customer-name-link" href="customer_form.php?id=<?php echo $c['id']; ?>"><?php echo htmlspecialchars($c['ten']); ?></a></td>
+            <td><a class="customer-name-link" href="actual_sale_form.php?id=<?php echo $c['id']; ?>"><?php echo htmlspecialchars($c['ten']); ?></a></td>
             <td class="ship-col">
-              <a class="action-link ship-btn" href="actual_sale_form.php?id=<?php echo $c['id']; ?>">Giao Hàng</a>
+              <a class="action-link ship-btn" href="customer_form.php?id=<?php echo $c['id']; ?>">Đặt cọc</a>
             </td>
             <td>
               <?php if (($c['trang_thai_boc'] ?? 'chua_boc') === 'xong'): ?>

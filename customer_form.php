@@ -48,13 +48,13 @@ if (count($items) === 0) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?php echo $khach_hang['id'] ? 'Sửa khách hàng' : 'Thêm khách hàng'; ?></title>
+  <title><?php echo $khach_hang['id'] ? 'Khách hàng đặt cọc hoa' : 'Thêm khách hàng'; ?></title>
   <link rel="stylesheet" href="assets/style.css?v=20260226_mobile23">
 </head>
 <body>
   <div class="container">
     <header class="header customer-form-header">
-      <h1><?php echo $khach_hang['id'] ? 'Sửa khách hàng' : 'Thêm khách hàng'; ?></h1>
+      <h1><?php echo $khach_hang['id'] ? 'Khách hàng đặt cọc hoa' : 'Thêm khách hàng'; ?></h1>
       <div class="actions">
         <a class="button secondary" href="index.php">Quay lại</a>
       </div>

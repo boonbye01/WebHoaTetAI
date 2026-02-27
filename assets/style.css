@@ -767,6 +767,7 @@ table td {
   text-decoration: none !important;
   box-shadow: none;
   font-weight: 700;
+  font-size: 12px;
 }
 .index-table td.ship-col .action-link.ship-btn:hover {
   color: #5b21b6;
