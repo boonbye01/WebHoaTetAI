@@ -97,7 +97,7 @@ function format_qty($value) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Quản lý loại hoa/chậu</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile20">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile21">
 </head>
 <body>
   <div class="container">
@@ -143,7 +143,7 @@ function format_qty($value) {
           <input type="text" name="ten_nha_vuon" required placeholder="Tên nhà vườn">
         </div>
         <div class="import-form-row import-form-row-2">
-          <input type="text" name="coc" inputmode="numeric" pattern="[0-9., ]*" placeholder="Cọc">
+          <input type="text" name="coc" inputmode="numeric" pattern="[0-9., ]*" placeholder="Cọc" class="currency-input">
           <input type="text" name="ghi_chu" placeholder="Ghi chú (nếu có)">
           <input type="date" name="ngay_nhap" value="<?php echo date('Y-m-d'); ?>" required>
           <button type="submit" class="button">Lưu phiếu nhập</button>
@@ -329,6 +329,17 @@ function format_qty($value) {
           importPriceInput.value = formatVndInput(importPriceInput.value);
           if (cursorEnd) {
             importPriceInput.setSelectionRange(importPriceInput.value.length, importPriceInput.value.length);
+          }
+        });
+      }
+
+      const importDepositInput = document.querySelector('input[name="coc"]');
+      if (importDepositInput) {
+        importDepositInput.addEventListener('input', function () {
+          const cursorEnd = importDepositInput.selectionStart === importDepositInput.value.length;
+          importDepositInput.value = formatVndInput(importDepositInput.value);
+          if (cursorEnd) {
+            importDepositInput.setSelectionRange(importDepositInput.value.length, importDepositInput.value.length);
           }
         });
       }
