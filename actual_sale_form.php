@@ -187,7 +187,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ch&#7889;t b&#225;n Sau L&#234;n xe</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile40">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile41">
 </head>
 <body>
   <div class="container">
@@ -391,8 +391,9 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       const qtyInput = row.querySelector('.actual-qty');
       const priceInput = row.querySelector('.actual-price');
       const qty = Number(qtyInput && qtyInput.value ? qtyInput.value : 0);
-      const hasPrice = String(priceInput && priceInput.value ? priceInput.value : '').replace(/[^0-9]/g, '') !== '';
-      return qty > 0 && hasPrice;
+      const priceRaw = String(priceInput && priceInput.value ? priceInput.value : '').trim();
+      const priceValue = parsePriceValue(priceRaw);
+      return qty > 0 && priceRaw !== '' && priceValue > 0;
     }
 
     function mergeDuplicateRowsInForm() {
@@ -606,6 +607,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
     document.addEventListener('click', async (e) => {
       const btn = e.target.closest('.history-delete-btn');
       if (!btn) return;
+      e.preventDefault();
       const historyId = btn.getAttribute('data-history-id');
       if (!historyId) return;
       const params = new URLSearchParams();
@@ -639,6 +641,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
         }
       } catch (err) {
         console.error('Delete merge history failed', err);
+        window.location.href = `delete_merge_history.php?id=${encodeURIComponent(historyId)}&khach_hang_id=<?php echo (int)$customer['id']; ?>&return_id=<?php echo (int)$customer['id']; ?>`;
       }
     });
 

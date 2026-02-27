@@ -3,21 +3,21 @@ require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/auth.php';
 require_login();
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    exit;
-}
-
+$method = strtoupper((string)($_SERVER['REQUEST_METHOD'] ?? 'GET'));
 $is_ajax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower((string)$_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
-$history_id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
-$customer_id = isset($_POST['khach_hang_id']) ? (int)$_POST['khach_hang_id'] : 0;
+$source = $method === 'POST' ? $_POST : $_GET;
+$history_id = isset($source['id']) ? (int)$source['id'] : 0;
+$customer_id = isset($source['khach_hang_id']) ? (int)$source['khach_hang_id'] : 0;
+$return_id = isset($source['return_id']) ? (int)$source['return_id'] : $customer_id;
 
 if ($history_id <= 0 || $customer_id <= 0) {
     http_response_code(422);
     if ($is_ajax) {
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(['ok' => false, 'error' => 'invalid_input']);
+    } elseif ($return_id > 0) {
+        header('Location: actual_sale_form.php?id=' . $return_id);
     }
     exit;
 }
@@ -29,6 +29,8 @@ if (!$check->fetchColumn()) {
     if ($is_ajax) {
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(['ok' => false, 'error' => 'history_table_not_found']);
+    } elseif ($return_id > 0) {
+        header('Location: actual_sale_form.php?id=' . $return_id);
     }
     exit;
 }
@@ -39,5 +41,6 @@ $stmt->execute([$history_id, $customer_id]);
 if ($is_ajax) {
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['ok' => true]);
+} elseif ($return_id > 0) {
+    header('Location: actual_sale_form.php?id=' . $return_id);
 }
-
