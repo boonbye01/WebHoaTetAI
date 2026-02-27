@@ -229,7 +229,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
     <table class="compare-table">
       <thead>
         <tr>
-          <th>Lo&#7841;i hoa/ch&#7853;u</th>
+          <th>Lo&#7841;i</th>
           <th>&#272;&#7863;t c&#7885;c (SL)</th>
           <th>&#272;&#227; l&#234;n xe (SL)</th>
           <th>Ch&#432;a B&#7889;c-R&#7899;t l&#7841;i</th>
