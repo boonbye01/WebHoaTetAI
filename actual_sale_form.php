@@ -54,7 +54,7 @@ $actual_rows = $actual_stmt->fetchAll();
 $merge_history_map = [];
 if (merge_history_exists($pdo)) {
     $history_stmt = $pdo->prepare(
-        'SELECT loai_hoa_id, so_luong, gia, DATE_FORMAT(thoi_gian, "%d/%m %H:%i") AS thoi_gian_hien_thi
+        'SELECT id, loai_hoa_id, so_luong, gia, DATE_FORMAT(thoi_gian, "%d/%m %H:%i") AS thoi_gian_hien_thi
          FROM khach_hang_hoa_thuc_te_gop_lich_su
          WHERE khach_hang_id = ?
          ORDER BY loai_hoa_id, thoi_gian ASC, id ASC'
@@ -67,6 +67,7 @@ if (merge_history_exists($pdo)) {
             $merge_history_map[$flower_id] = [];
         }
         $merge_history_map[$flower_id][] = [
+            'id' => (int)$hrow['id'],
             'so_luong' => (float)$hrow['so_luong'],
             'gia' => (float)$hrow['gia'],
             'thoi_gian' => $hrow['thoi_gian_hien_thi'],
@@ -186,7 +187,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ch&#7889;t b&#225;n Sau L&#234;n xe</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile39">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile40">
 </head>
 <body>
   <div class="container">
@@ -260,10 +261,15 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
               <div class="merge-history-list" id="merge-history-<?php echo $idx; ?>" hidden>
                 <ul>
                   <?php foreach ($history_items as $hitem): ?>
-                    <li>
-                      SL <?php echo htmlspecialchars(format_decimal($hitem['so_luong'])); ?> -
-                      Gi&#225; <?php echo htmlspecialchars(format_vnd($hitem['gia'])); ?> VND -
-                      <?php echo htmlspecialchars($hitem['thoi_gian']); ?>
+                    <li data-history-id="<?php echo (int)$hitem['id']; ?>">
+                      <span>
+                        SL <?php echo htmlspecialchars(format_decimal($hitem['so_luong'])); ?> -
+                        Gi&#225; <?php echo htmlspecialchars(format_vnd($hitem['gia'])); ?> VND -
+                        <?php echo htmlspecialchars($hitem['thoi_gian']); ?>
+                      </span>
+                      <button type="button" class="history-delete-btn" data-history-id="<?php echo (int)$hitem['id']; ?>" title="Xóa lịch sử" aria-label="Xóa lịch sử">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg>
+                      </button>
                     </li>
                   <?php endforeach; ?>
                 </ul>
@@ -381,6 +387,14 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       return n === '' ? 0 : Number(n);
     }
 
+    function isRowReadyForMerge(row) {
+      const qtyInput = row.querySelector('.actual-qty');
+      const priceInput = row.querySelector('.actual-price');
+      const qty = Number(qtyInput && qtyInput.value ? qtyInput.value : 0);
+      const hasPrice = String(priceInput && priceInput.value ? priceInput.value : '').replace(/[^0-9]/g, '') !== '';
+      return qty > 0 && hasPrice;
+    }
+
     function mergeDuplicateRowsInForm() {
       const rows = Array.from(actualItems.querySelectorAll('.actual-row'));
       const grouped = new Map();
@@ -396,14 +410,17 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
 
       grouped.forEach((groupRows) => {
         if (groupRows.length <= 1) return;
+
+        const mergeCandidates = groupRows.filter((row) => isRowReadyForMerge(row));
+        if (mergeCandidates.length <= 1) return;
         changed = true;
 
-        const keep = groupRows[0];
+        const keep = mergeCandidates[0];
         let sumQty = 0;
         let sumAmount = 0;
         let latestTime = '';
 
-        groupRows.forEach((row) => {
+        mergeCandidates.forEach((row) => {
           const qtyInput = row.querySelector('.actual-qty');
           const priceInput = row.querySelector('.actual-price');
           const timeInput = row.querySelector('.actual-time');
@@ -424,7 +441,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
         const keepTime = keep.querySelector('.actual-time');
         const mergedPrice = sumQty > 0 ? Math.round(sumAmount / sumQty) : 0;
 
-        groupRows.forEach((row) => {
+        mergeCandidates.forEach((row) => {
           const qtyInput = row.querySelector('.actual-qty');
           const priceInput = row.querySelector('.actual-price');
           const timeInput = row.querySelector('.actual-time');
@@ -445,8 +462,8 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
         if (keepPrice) keepPrice.value = mergedPrice > 0 ? formatVndInput(String(mergedPrice)) : '';
         if (keepTime) keepTime.value = latestTime || nowDatetimeLocal();
 
-        for (let i = 1; i < groupRows.length; i += 1) {
-          groupRows[i].remove();
+        for (let i = 1; i < mergeCandidates.length; i += 1) {
+          mergeCandidates[i].remove();
         }
       });
 
@@ -583,6 +600,45 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       } else {
         panel.setAttribute('hidden', 'hidden');
         btn.textContent = btn.getAttribute('data-label') || 'Lịch sử đã gộp';
+      }
+    });
+
+    document.addEventListener('click', async (e) => {
+      const btn = e.target.closest('.history-delete-btn');
+      if (!btn) return;
+      const historyId = btn.getAttribute('data-history-id');
+      if (!historyId) return;
+      const params = new URLSearchParams();
+      params.append('id', historyId);
+      params.append('khach_hang_id', '<?php echo (int)$customer['id']; ?>');
+      try {
+        const res = await fetch('delete_merge_history.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: params.toString()
+        });
+        if (!res.ok) return;
+        const row = btn.closest('li');
+        if (!row) return;
+        const list = row.parentElement;
+        const box = row.closest('.merge-history-box');
+        const toggleBtn = box ? box.querySelector('.toggle-merge-history') : null;
+        row.remove();
+        if (list && list.children.length === 0) {
+          const panel = list.closest('.merge-history-list');
+          if (panel) panel.setAttribute('hidden', 'hidden');
+          if (box) box.remove();
+        } else if (list && toggleBtn) {
+          const count = list.children.length;
+          const label = `Lịch sử đã gộp (${count})`;
+          toggleBtn.setAttribute('data-label', label);
+          toggleBtn.textContent = label;
+        }
+      } catch (err) {
+        console.error('Delete merge history failed', err);
       }
     });
 
