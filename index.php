@@ -28,7 +28,7 @@ function format_decimal($value) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Quản lý hoa Tết</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile22">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile23">
 </head>
 <body>
   <div class="container">
@@ -47,6 +47,7 @@ function format_decimal($value) {
 
     <form class="inline-form" id="search-form" onsubmit="return false;">
       <input type="text" id="search-input" placeholder="Tìm theo tên khách hàng..." autocomplete="off">
+      <button type="button" class="button secondary" id="filter-pending">Chưa Bốc</button>
       <button type="button" class="button secondary" id="clear-search">Xóa lọc</button>
     </form>
 
@@ -67,7 +68,7 @@ function format_decimal($value) {
         <tr><td colspan="7">Chưa có khách hàng.</td></tr>
       <?php else: ?>
         <?php foreach ($customers as $c): ?>
-          <tr class="customer-row" data-name="<?php echo htmlspecialchars($c['ten']); ?>">
+          <tr class="customer-row" data-name="<?php echo htmlspecialchars($c['ten']); ?>" data-status="<?php echo (($c['trang_thai_boc'] ?? 'chua_boc') === 'xong') ? 'xong' : 'chua_boc'; ?>">
             <td><a class="customer-name-link" href="customer_form.php?id=<?php echo $c['id']; ?>"><?php echo htmlspecialchars($c['ten']); ?></a></td>
             <td class="ship-col">
               <a class="action-link ship-btn" href="actual_sale_form.php?id=<?php echo $c['id']; ?>">Giao Hàng</a>
@@ -103,30 +104,45 @@ function format_decimal($value) {
 
       const rows = Array.from(document.querySelectorAll('.customer-row'));
       const clearBtn = document.getElementById('clear-search');
+      const pendingBtn = document.getElementById('filter-pending');
+      let pendingOnly = false;
 
       function normalize(text) {
         return (text || '').toLocaleLowerCase('vi-VN').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       }
 
+      function applyFilters() {
+        const keyword = normalize(input.value.trim());
+        rows.forEach(function (row) {
+          const name = normalize(row.getAttribute('data-name'));
+          const status = row.getAttribute('data-status') || 'chua_boc';
+          const matchesName = (keyword === '' || name.includes(keyword));
+          const matchesStatus = !pendingOnly || status === 'chua_boc';
+          row.style.display = (matchesName && matchesStatus) ? '' : 'none';
+        });
+      }
+
       let timer = null;
       input.addEventListener('input', function () {
         if (timer) clearTimeout(timer);
-        timer = setTimeout(function () {
-          const keyword = normalize(input.value.trim());
-          rows.forEach(function (row) {
-            const name = normalize(row.getAttribute('data-name'));
-            row.style.display = (keyword === '' || name.includes(keyword)) ? '' : 'none';
-          });
-        }, 300);
+        timer = setTimeout(applyFilters, 300);
       });
 
       if (clearBtn) {
         clearBtn.addEventListener('click', function () {
           input.value = '';
-          rows.forEach(function (row) {
-            row.style.display = '';
-          });
+          pendingOnly = false;
+          if (pendingBtn) pendingBtn.classList.remove('active');
+          applyFilters();
           input.focus();
+        });
+      }
+
+      if (pendingBtn) {
+        pendingBtn.addEventListener('click', function () {
+          pendingOnly = !pendingOnly;
+          pendingBtn.classList.toggle('active', pendingOnly);
+          applyFilters();
         });
       }
     })();

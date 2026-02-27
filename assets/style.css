@@ -38,6 +38,9 @@ body {
 .button.secondary {
   background: #6b7280;
 }
+.button.secondary.active {
+  background: #374151;
+}
 .button.danger, a.danger {
   background: #d93025;
   color: #fff;
