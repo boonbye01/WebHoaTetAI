@@ -66,6 +66,7 @@ CREATE TABLE nhap_vuon_ngoai (
   so_luong_cap DECIMAL(10,2) NOT NULL DEFAULT 0,
   don_gia_lay DECIMAL(12,2) NOT NULL DEFAULT 0,
   ten_nha_vuon VARCHAR(200) NOT NULL,
+  coc DECIMAL(12,2) NOT NULL DEFAULT 0,
   ghi_chu VARCHAR(255) NOT NULL DEFAULT '',
   ngay_nhap DATE NOT NULL,
   created_at DATETIME NOT NULL,

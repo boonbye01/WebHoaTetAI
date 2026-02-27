@@ -16,12 +16,18 @@ $pdo->exec(
       so_luong_cap DECIMAL(10,2) NOT NULL DEFAULT 0,
       don_gia_lay DECIMAL(12,2) NOT NULL DEFAULT 0,
       ten_nha_vuon VARCHAR(200) NOT NULL,
+      coc DECIMAL(12,2) NOT NULL DEFAULT 0,
       ghi_chu VARCHAR(255) NOT NULL DEFAULT '',
       ngay_nhap DATE NOT NULL,
       created_at DATETIME NOT NULL,
       CONSTRAINT fk_nhap_vuon_ngoai_loai_hoa FOREIGN KEY (loai_hoa_id) REFERENCES loai_hoa(id) ON DELETE RESTRICT
     ) ENGINE=InnoDB"
 );
+try {
+    $pdo->exec("ALTER TABLE nhap_vuon_ngoai ADD COLUMN coc DECIMAL(12,2) NOT NULL DEFAULT 0 AFTER ten_nha_vuon");
+} catch (Exception $e) {
+    // Column may already exist.
+}
 
 $flowers = $pdo->query(
     'SELECT l.id, l.ten, l.so_luong_ban_dau,
@@ -62,7 +68,7 @@ $flowers = $pdo->query(
 )->fetchAll();
 
 $import_rows = $pdo->query(
-    'SELECT n.id, n.ngay_nhap, n.so_luong_cap, n.don_gia_lay, n.ten_nha_vuon, n.ghi_chu, l.ten AS ten_hoa,
+    'SELECT n.id, n.ngay_nhap, n.so_luong_cap, n.don_gia_lay, n.ten_nha_vuon, n.coc, n.ghi_chu, l.ten AS ten_hoa,
             (n.so_luong_cap * n.don_gia_lay) AS thanh_tien
      FROM nhap_vuon_ngoai n
      JOIN loai_hoa l ON l.id = n.loai_hoa_id
@@ -134,6 +140,7 @@ function format_qty($value) {
         <input type="number" step="0.01" min="0.01" name="so_luong_cap" required placeholder="SL Cặp">
         <input type="text" name="don_gia_lay" inputmode="numeric" pattern="[0-9., ]*" required placeholder="Đơn giá lấy">
         <input type="text" name="ten_nha_vuon" required placeholder="Tên nhà vườn">
+        <input type="text" name="coc" inputmode="numeric" pattern="[0-9., ]*" placeholder="Cọc">
         <input type="text" name="ghi_chu" placeholder="Ghi chú (nếu có)">
         <input type="date" name="ngay_nhap" value="<?php echo date('Y-m-d'); ?>" required>
         <button type="submit" class="button">Lưu phiếu nhập</button>
@@ -147,13 +154,14 @@ function format_qty($value) {
             <th>SL Cặp</th>
             <th>Đơn giá lấy</th>
             <th>Tên nhà vườn</th>
+            <th>Cọc</th>
             <th>Thành tiền</th>
             <th>Ghi chú</th>
           </tr>
         </thead>
         <tbody>
         <?php if (count($import_rows) === 0): ?>
-          <tr><td colspan="7">Chưa có phiếu nhập nào.</td></tr>
+          <tr><td colspan="8">Chưa có phiếu nhập nào.</td></tr>
         <?php else: ?>
           <?php foreach ($import_rows as $row): ?>
             <tr>
@@ -162,6 +170,7 @@ function format_qty($value) {
               <td><?php echo htmlspecialchars(format_qty($row['so_luong_cap'])); ?></td>
               <td><?php echo htmlspecialchars(format_vnd($row['don_gia_lay'])); ?> VND</td>
               <td><?php echo htmlspecialchars($row['ten_nha_vuon']); ?></td>
+              <td><?php echo htmlspecialchars(format_vnd($row['coc'])); ?> VND</td>
               <td><?php echo htmlspecialchars(format_vnd($row['thanh_tien'])); ?> VND</td>
               <td><?php echo htmlspecialchars($row['ghi_chu']); ?></td>
             </tr>
