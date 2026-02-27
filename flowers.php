@@ -97,7 +97,7 @@ function format_qty($value) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Quản lý loại hoa/chậu</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile19">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile20">
 </head>
 <body>
   <div class="container">
@@ -139,7 +139,7 @@ function format_qty($value) {
             <?php endforeach; ?>
           </select>
           <input type="number" step="0.01" min="0.01" name="so_luong_cap" required placeholder="SL Cặp">
-          <input type="text" name="don_gia_lay" inputmode="numeric" pattern="[0-9., ]*" required placeholder="Đơn giá lấy">
+        <input type="text" name="don_gia_lay" inputmode="numeric" pattern="[0-9., ]*" required placeholder="Đơn giá lấy" class="currency-input">
           <input type="text" name="ten_nha_vuon" required placeholder="Tên nhà vườn">
         </div>
         <div class="import-form-row import-form-row-2">
@@ -275,6 +275,12 @@ function format_qty($value) {
 
   <script>
     (function () {
+      function formatVndInput(value) {
+        const n = String(value || '').replace(/[^0-9]/g, '');
+        if (n === '') return '';
+        return Number(n).toLocaleString('vi-VN');
+      }
+
       const forms = document.querySelectorAll('.table-inline-form');
       const timers = new WeakMap();
 
@@ -313,6 +319,17 @@ function format_qty($value) {
       if (importButton && importPanel) {
         importButton.addEventListener('click', function () {
           importPanel.hidden = !importPanel.hidden;
+        });
+      }
+
+      const importPriceInput = document.querySelector('input[name="don_gia_lay"]');
+      if (importPriceInput) {
+        importPriceInput.addEventListener('input', function () {
+          const cursorEnd = importPriceInput.selectionStart === importPriceInput.value.length;
+          importPriceInput.value = formatVndInput(importPriceInput.value);
+          if (cursorEnd) {
+            importPriceInput.setSelectionRange(importPriceInput.value.length, importPriceInput.value.length);
+          }
         });
       }
     })();
