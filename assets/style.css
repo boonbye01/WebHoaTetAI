@@ -662,6 +662,12 @@ table td {
 .compare-table td:nth-child(2) {
   padding-left: 2px !important;
 }
+.compare-table td:nth-child(1) {
+  padding-right: 10px !important;
+}
+.compare-table td:nth-child(2) {
+  padding-left: 10px !important;
+}
 .compare-table th:nth-child(1) {
   padding-right: 6px !important;
 }
@@ -706,6 +712,12 @@ table td {
   .compare-table th:nth-child(2),
   .compare-table td:nth-child(2) {
     padding-left: 1px !important;
+  }
+  .compare-table td:nth-child(1) {
+    padding-right: 10px !important;
+  }
+  .compare-table td:nth-child(2) {
+    padding-left: 10px !important;
   }
   .compare-table th:nth-child(1) {
     padding-right: 6px !important;
