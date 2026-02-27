@@ -186,7 +186,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ch&#7889;t b&#225;n Sau L&#234;n xe</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile37">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile38">
 </head>
 <body>
   <div class="container">
@@ -373,6 +373,69 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
     }
 
+    function parsePriceValue(raw) {
+      const n = String(raw || '').replace(/[^0-9]/g, '');
+      return n === '' ? 0 : Number(n);
+    }
+
+    function mergeDuplicateRowsInForm() {
+      const rows = Array.from(actualItems.querySelectorAll('.actual-row'));
+      const grouped = new Map();
+      let changed = false;
+
+      rows.forEach((row) => {
+        const select = row.querySelector('.actual-select');
+        const flowerId = select ? String(select.value || '') : '';
+        if (!flowerId) return;
+        if (!grouped.has(flowerId)) grouped.set(flowerId, []);
+        grouped.get(flowerId).push(row);
+      });
+
+      grouped.forEach((groupRows) => {
+        if (groupRows.length <= 1) return;
+        changed = true;
+
+        const keep = groupRows[0];
+        let sumQty = 0;
+        let sumAmount = 0;
+        let latestTime = '';
+
+        groupRows.forEach((row) => {
+          const qtyInput = row.querySelector('.actual-qty');
+          const priceInput = row.querySelector('.actual-price');
+          const timeInput = row.querySelector('.actual-time');
+          const qty = Number(qtyInput && qtyInput.value ? qtyInput.value : 0);
+          const price = parsePriceValue(priceInput ? priceInput.value : '');
+
+          if (qty > 0) {
+            sumQty += qty;
+            sumAmount += qty * price;
+          }
+          if (timeInput && timeInput.value) {
+            if (!latestTime || timeInput.value > latestTime) latestTime = timeInput.value;
+          }
+        });
+
+        const keepQty = keep.querySelector('.actual-qty');
+        const keepPrice = keep.querySelector('.actual-price');
+        const keepTime = keep.querySelector('.actual-time');
+        const mergedPrice = sumQty > 0 ? Math.round(sumAmount / sumQty) : 0;
+
+        if (keepQty) keepQty.value = sumQty > 0 ? String(sumQty) : '';
+        if (keepPrice) keepPrice.value = mergedPrice > 0 ? formatVndInput(String(mergedPrice)) : '';
+        if (keepTime) keepTime.value = latestTime || nowDatetimeLocal();
+
+        for (let i = 1; i < groupRows.length; i += 1) {
+          groupRows[i].remove();
+        }
+      });
+
+      if (changed) {
+        reindexActualRows();
+      }
+      return changed;
+    }
+
     function addActualRow() {
       const fragment = actualTemplate.content.cloneNode(true);
       const timeInput = fragment.querySelector('.actual-time');
@@ -381,6 +444,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       }
       actualItems.appendChild(fragment);
       reindexActualRows();
+      mergeDuplicateRowsInForm();
       dirty = true;
       scheduleSave();
     }
@@ -444,6 +508,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
         }
       }
       if (e.target.classList.contains('actual-select') || e.target.classList.contains('actual-qty') || e.target.classList.contains('actual-price') || e.target.classList.contains('actual-time')) {
+        mergeDuplicateRowsInForm();
         dirty = true;
         scheduleSave();
       }
@@ -451,6 +516,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
 
     actualItems.addEventListener('change', (e) => {
       if (e.target.classList.contains('actual-select') || e.target.classList.contains('actual-qty') || e.target.classList.contains('actual-price') || e.target.classList.contains('actual-time')) {
+        mergeDuplicateRowsInForm();
         dirty = true;
         scheduleSave();
       }
@@ -471,6 +537,10 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
     });
 
     reindexActualRows();
+    if (mergeDuplicateRowsInForm()) {
+      dirty = true;
+      scheduleSave();
+    }
 
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('.toggle-merge-history');
