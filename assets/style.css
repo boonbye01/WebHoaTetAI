@@ -507,11 +507,11 @@ table td {
 }
 #actual-sale-form .items-header.item-row,
 #actual-sale-form #actual-items .actual-row {
-  min-width: 660px;
+  min-width: 620px;
 }
 #actual-sale-form .actual-row {
   display: grid !important;
-  grid-template-columns: minmax(85px, 118px) 46px 90px 170px 72px !important;
+  grid-template-columns: minmax(85px, 118px) 46px 90px 170px 32px !important;
   gap: 8px;
   align-items: center;
 }
@@ -553,8 +553,8 @@ table td {
 @media (max-width: 640px) {
   #actual-sale-form .actual-row,
   #actual-sale-form .items-header.item-row {
-    grid-template-columns: minmax(85px, 118px) 44px 88px 160px 66px !important;
-    min-width: 650px;
+    grid-template-columns: minmax(85px, 118px) 44px 88px 160px 30px !important;
+    min-width: 600px;
   }
   .actual-sale-totals .field label {
     min-width: 150px;
@@ -665,88 +665,6 @@ table td {
   line-height: 1.25;
 }
 
-.merge-history-box {
-  margin: -2px 0 10px;
-  padding: 0 4px 6px;
-}
-.toggle-merge-history {
-  border: 1px solid #d1d5db;
-  background: #f9fafb;
-  color: #374151;
-  border-radius: 999px;
-  padding: 4px 10px;
-  font-size: 12px;
-  cursor: pointer;
-}
-.toggle-merge-history:hover {
-  background: #f3f4f6;
-}
-.merge-history-list {
-  margin-top: 6px;
-  background: #f8fbff;
-  border: 1px solid #dbeafe;
-  border-radius: 8px;
-  padding: 8px 10px;
-}
-.merge-history-list ul {
-  margin: 0;
-  padding-left: 16px;
-}
-.merge-history-list li {
-  font-size: 12px;
-  line-height: 1.45;
-  color: #374151;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-.merge-history-list li:last-child {
-  margin-bottom: 0;
-}
-.row-action-group {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.save-row-btn {
-  height: 30px;
-  min-width: 34px;
-  padding: 0 8px;
-  border: 1px solid #bfdbfe;
-  border-radius: 6px;
-  background: #eff6ff;
-  color: #1d4ed8;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.save-row-btn:hover {
-  background: #dbeafe;
-}
-.history-delete-btn {
-  border: 1px solid #fecaca;
-  background: #fee2e2;
-  color: #b91c1c;
-  width: 24px;
-  height: 24px;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 0;
-  flex: 0 0 auto;
-}
-.history-delete-btn svg {
-  width: 12px;
-  height: 12px;
-  fill: currentColor;
-}
-.history-delete-btn:hover {
-  background: #fecaca;
-}
 
 
 /* index-table compact tuning */
