@@ -144,10 +144,10 @@ table td {
   white-space: nowrap;
 }
 .table-inline-form .auto-stock-input {
-  width: 30px !important;
-  min-width: 30px !important;
-  max-width: 30px !important;
-  flex: 0 0 30px !important;
+  width: 45px !important;
+  min-width: 45px !important;
+  max-width: 45px !important;
+  flex: 0 0 45px !important;
   padding: 4px 2px !important;
   text-align: center;
 }
@@ -389,10 +389,10 @@ table td {
     width: 100%;
   }
   .table-inline-form .auto-stock-input {
-    width: 30px !important;
-    min-width: 30px !important;
-    max-width: 30px !important;
-    flex: 0 0 30px !important;
+    width: 45px !important;
+    min-width: 45px !important;
+    max-width: 45px !important;
+    flex: 0 0 45px !important;
   }
   .table-inline-form .unit-suffix {
     display: inline-block;
