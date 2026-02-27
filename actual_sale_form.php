@@ -187,7 +187,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ch&#7889;t b&#225;n Sau L&#234;n xe</title>
-  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile42">
+  <link rel="stylesheet" href="assets/style.css?v=20260226_mobile43">
 </head>
 <body>
   <div class="container">
@@ -239,7 +239,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
               $history_items = $merge_history_map[$flower_id_for_history];
             }
           ?>
-          <div class="item-row actual-row">
+          <div class="item-row actual-row" data-has-history="<?php echo count($history_items) > 0 ? '1' : '0'; ?>">
             <select name="items[<?php echo $idx; ?>][loai_hoa_id]" class="actual-select">
               <option value="">-- Ch&#7885;n lo&#7841;i --</option>
               <?php foreach ($flowers as $flower): ?>
@@ -251,7 +251,10 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
             <input type="number" step="0.01" min="0" name="items[<?php echo $idx; ?>][so_luong]" value="<?php echo htmlspecialchars(format_decimal($row['so_luong'])); ?>" placeholder="S&#7889; l&#432;&#7907;ng" class="actual-qty">
             <input type="text" name="items[<?php echo $idx; ?>][gia]" value="<?php echo htmlspecialchars(format_decimal($row['gia'])); ?>" placeholder="Gi&#225; (VND)" class="actual-price currency-input">
             <input type="datetime-local" name="items[<?php echo $idx; ?>][thoi_gian]" value="<?php echo htmlspecialchars($row['thoi_gian'] ?? date('Y-m-d\TH:i')); ?>" class="actual-time">
-            <button type="button" class="remove-row-btn" onclick="removeActualRow(this)" aria-label="Xóa dòng" title="Xóa dòng"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg></button>
+            <div class="row-action-group">
+              <button type="button" class="save-row-btn" title="Lưu và gộp dòng trùng" aria-label="Lưu dòng">Lưu</button>
+              <button type="button" class="remove-row-btn" onclick="removeActualRow(this)" aria-label="Xóa dòng" title="Xóa dòng"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg></button>
+            </div>
           </div>
           <?php if (count($history_items) > 0): ?>
             <div class="merge-history-box">
@@ -336,7 +339,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
   </div>
 
   <template id="actual-row-template">
-    <div class="item-row actual-row">
+    <div class="item-row actual-row" data-has-history="0">
       <select name="" class="actual-select">
         <option value="">-- Ch&#7885;n lo&#7841;i --</option>
         <?php foreach ($flowers as $flower): ?>
@@ -346,7 +349,10 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       <input type="number" step="0.01" min="0" name="" placeholder="S&#7889; l&#432;&#7907;ng" class="actual-qty">
       <input type="text" name="" placeholder="Gi&#225; (VND)" class="actual-price currency-input">
       <input type="datetime-local" name="" class="actual-time">
-      <button type="button" class="remove-row-btn" onclick="removeActualRow(this)" aria-label="Xóa dòng" title="Xóa dòng"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg></button>
+      <div class="row-action-group">
+        <button type="button" class="save-row-btn" title="Lưu và gộp dòng trùng" aria-label="Lưu dòng">Lưu</button>
+        <button type="button" class="remove-row-btn" onclick="removeActualRow(this)" aria-label="Xóa dòng" title="Xóa dòng"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"/></svg></button>
+      </div>
     </div>
   </template>
 
@@ -396,82 +402,69 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       return qty > 0 && priceRaw !== '' && priceValue > 0;
     }
 
-    function mergeDuplicateRowsInForm() {
+    function mergeRowsByType(sourceRow) {
+      if (!sourceRow) return false;
+      const sourceSelect = sourceRow.querySelector('.actual-select');
+      const flowerId = sourceSelect ? String(sourceSelect.value || '') : '';
+      if (!flowerId) return false;
+
       const rows = Array.from(actualItems.querySelectorAll('.actual-row'));
-      const grouped = new Map();
-      let changed = false;
-
-      rows.forEach((row) => {
+      const sameTypeRows = rows.filter((row) => {
         const select = row.querySelector('.actual-select');
-        const flowerId = select ? String(select.value || '') : '';
-        if (!flowerId) return;
-        if (!grouped.has(flowerId)) grouped.set(flowerId, []);
-        grouped.get(flowerId).push(row);
+        return select && String(select.value || '') === flowerId;
       });
+      const mergeCandidates = sameTypeRows.filter((row) => isRowReadyForMerge(row));
+      if (mergeCandidates.length <= 1) return false;
 
-      grouped.forEach((groupRows) => {
-        if (groupRows.length <= 1) return;
+      const keep = mergeCandidates[0];
+      const keepHadHistory = keep.getAttribute('data-has-history') === '1';
+      let sumQty = 0;
+      let sumAmount = 0;
+      let latestTime = '';
 
-        const mergeCandidates = groupRows.filter((row) => isRowReadyForMerge(row));
-        if (mergeCandidates.length <= 1) return;
-        changed = true;
+      mergeCandidates.forEach((row) => {
+        const qtyInput = row.querySelector('.actual-qty');
+        const priceInput = row.querySelector('.actual-price');
+        const timeInput = row.querySelector('.actual-time');
+        const qty = Number(qtyInput && qtyInput.value ? qtyInput.value : 0);
+        const price = parsePriceValue(priceInput ? priceInput.value : '');
+        const timeValue = (timeInput && timeInput.value) ? timeInput.value : nowDatetimeLocal();
 
-        const keep = mergeCandidates[0];
-        let sumQty = 0;
-        let sumAmount = 0;
-        let latestTime = '';
-
-        mergeCandidates.forEach((row) => {
-          const qtyInput = row.querySelector('.actual-qty');
-          const priceInput = row.querySelector('.actual-price');
-          const timeInput = row.querySelector('.actual-time');
-          const qty = Number(qtyInput && qtyInput.value ? qtyInput.value : 0);
-          const price = parsePriceValue(priceInput ? priceInput.value : '');
-
-          if (qty > 0) {
-            sumQty += qty;
-            sumAmount += qty * price;
-          }
-          if (timeInput && timeInput.value) {
-            if (!latestTime || timeInput.value > latestTime) latestTime = timeInput.value;
-          }
-        });
-
-        const keepQty = keep.querySelector('.actual-qty');
-        const keepPrice = keep.querySelector('.actual-price');
-        const keepTime = keep.querySelector('.actual-time');
-        const mergedPrice = sumQty > 0 ? Math.round(sumAmount / sumQty) : 0;
-
-        mergeCandidates.forEach((row) => {
-          const qtyInput = row.querySelector('.actual-qty');
-          const priceInput = row.querySelector('.actual-price');
-          const timeInput = row.querySelector('.actual-time');
-          const qty = Number(qtyInput && qtyInput.value ? qtyInput.value : 0);
-          const price = parsePriceValue(priceInput ? priceInput.value : '');
-          const timeValue = (timeInput && timeInput.value) ? timeInput.value : nowDatetimeLocal();
-          if (qty > 0) {
+        if (qty > 0) {
+          sumQty += qty;
+          sumAmount += qty * price;
+          if (row !== keep || !keepHadHistory) {
             mergeHistoryBuffer.push({
-              loai_hoa_id: Number(keep.querySelector('.actual-select').value || 0),
+              loai_hoa_id: Number(flowerId),
               so_luong: qty,
               gia: price,
               thoi_gian: timeValue,
             });
           }
-        });
-
-        if (keepQty) keepQty.value = sumQty > 0 ? String(sumQty) : '';
-        if (keepPrice) keepPrice.value = mergedPrice > 0 ? formatVndInput(String(mergedPrice)) : '';
-        if (keepTime) keepTime.value = latestTime || nowDatetimeLocal();
-
-        for (let i = 1; i < mergeCandidates.length; i += 1) {
-          mergeCandidates[i].remove();
+        }
+        if (!latestTime || timeValue > latestTime) {
+          latestTime = timeValue;
         }
       });
 
-      if (changed) {
-        reindexActualRows();
+      const keepQty = keep.querySelector('.actual-qty');
+      const keepPrice = keep.querySelector('.actual-price');
+      const keepTime = keep.querySelector('.actual-time');
+      const mergedPrice = sumQty > 0 ? Math.round(sumAmount / sumQty) : 0;
+
+      if (keepQty) keepQty.value = sumQty > 0 ? String(sumQty) : '';
+      if (keepPrice) keepPrice.value = mergedPrice > 0 ? formatVndInput(String(mergedPrice)) : '';
+      if (keepTime) keepTime.value = latestTime || nowDatetimeLocal();
+      keep.setAttribute('data-has-history', '1');
+
+      for (let i = 1; i < mergeCandidates.length; i += 1) {
+        mergeCandidates[i].remove();
       }
-      return changed;
+
+      reindexActualRows();
+      dirty = true;
+      scheduleSave();
+      return true;
     }
 
     function addActualRow() {
@@ -482,7 +475,6 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
       }
       actualItems.appendChild(fragment);
       reindexActualRows();
-      mergeDuplicateRowsInForm();
       dirty = true;
       scheduleSave();
     }
@@ -553,7 +545,6 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
         }
       }
       if (e.target.classList.contains('actual-select') || e.target.classList.contains('actual-qty') || e.target.classList.contains('actual-price') || e.target.classList.contains('actual-time')) {
-        mergeDuplicateRowsInForm();
         dirty = true;
         scheduleSave();
       }
@@ -561,7 +552,6 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
 
     actualItems.addEventListener('change', (e) => {
       if (e.target.classList.contains('actual-select') || e.target.classList.contains('actual-qty') || e.target.classList.contains('actual-price') || e.target.classList.contains('actual-time')) {
-        mergeDuplicateRowsInForm();
         dirty = true;
         scheduleSave();
       }
@@ -582,10 +572,17 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
     });
 
     reindexActualRows();
-    if (mergeDuplicateRowsInForm()) {
-      dirty = true;
-      scheduleSave();
-    }
+
+    actualItems.addEventListener('click', (e) => {
+      const saveBtn = e.target.closest('.save-row-btn');
+      if (!saveBtn) return;
+      const row = saveBtn.closest('.actual-row');
+      const merged = mergeRowsByType(row);
+      if (!merged) {
+        dirty = true;
+        scheduleSave();
+      }
+    });
 
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('.toggle-merge-history');
@@ -626,22 +623,7 @@ $remaining_after_deposit = max($total_actual_amount - (float)$customer['coc'], 0
           window.location.href = `delete_merge_history.php?id=${encodeURIComponent(historyId)}&khach_hang_id=<?php echo (int)$customer['id']; ?>&return_id=<?php echo (int)$customer['id']; ?>`;
           return;
         }
-        const row = btn.closest('li');
-        if (!row) return;
-        const list = row.parentElement;
-        const box = row.closest('.merge-history-box');
-        const toggleBtn = box ? box.querySelector('.toggle-merge-history') : null;
-        row.remove();
-        if (list && list.children.length === 0) {
-          const panel = list.closest('.merge-history-list');
-          if (panel) panel.setAttribute('hidden', 'hidden');
-          if (box) box.remove();
-        } else if (list && toggleBtn) {
-          const count = list.children.length;
-          const label = `Lịch sử đã gộp (${count})`;
-          toggleBtn.setAttribute('data-label', label);
-          toggleBtn.textContent = label;
-        }
+        window.location.reload();
       } catch (err) {
         console.error('Delete merge history failed', err);
         window.location.href = `delete_merge_history.php?id=${encodeURIComponent(historyId)}&khach_hang_id=<?php echo (int)$customer['id']; ?>&return_id=<?php echo (int)$customer['id']; ?>`;

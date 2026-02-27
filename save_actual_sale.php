@@ -100,9 +100,6 @@ try {
         'INSERT INTO khach_hang_hoa_thuc_te_gop_lich_su (khach_hang_id, loai_hoa_id, so_luong, gia, thoi_gian, created_at)
          VALUES (?, ?, ?, ?, ?, NOW())'
     );
-    $delete_history_by_flower = $pdo->prepare(
-        'DELETE FROM khach_hang_hoa_thuc_te_gop_lich_su WHERE khach_hang_id = ? AND loai_hoa_id = ?'
-    );
 
     $valid_rows = [];
     foreach ($items as $item) {
@@ -134,62 +131,14 @@ try {
         ];
     }
 
-    $grouped = [];
     foreach ($valid_rows as $row) {
-        $flower_id = $row['flower_id'];
-        if (!isset($grouped[$flower_id])) {
-            $grouped[$flower_id] = [];
-        }
-        $grouped[$flower_id][] = $row;
-    }
-
-    foreach ($grouped as $flower_id => $rows) {
-        $mergeable_rows = [];
-        $pending_rows = [];
-        foreach ($rows as $row) {
-            if ((float)$row['price'] > 0) {
-                $mergeable_rows[] = $row;
-            } else {
-                $pending_rows[] = $row;
-            }
-        }
-
-        if (count($mergeable_rows) <= 1) {
-            foreach ($rows as $row) {
-                $insert->execute([$customer_id, $flower_id, $row['qty'], $row['price'], $row['time']]);
-            }
-            continue;
-        }
-
-        $merged_rows_detected = true;
-
-        $sum_qty = 0.0;
-        $sum_amount = 0.0;
-        $latest_time = $mergeable_rows[0]['time'];
-        foreach ($mergeable_rows as $row) {
-            $sum_qty += (float)$row['qty'];
-            $sum_amount += (float)$row['qty'] * (float)$row['price'];
-            if (strtotime($row['time']) > strtotime($latest_time)) {
-                $latest_time = $row['time'];
-            }
-        }
-        $merged_price = $sum_qty > 0 ? round($sum_amount / $sum_qty, 2) : 0;
-        $insert->execute([$customer_id, $flower_id, $sum_qty, $merged_price, $latest_time]);
-
-        foreach ($pending_rows as $row) {
-            $insert->execute([$customer_id, $flower_id, $row['qty'], $row['price'], $row['time']]);
-        }
-
-        $delete_history_by_flower->execute([$customer_id, $flower_id]);
-        foreach ($mergeable_rows as $row) {
-            $insert_history->execute([
-                $customer_id,
-                $flower_id,
-                $row['qty'],
-                $row['price'],
-                $row['time'],
-            ]);
-        }
+        $insert->execute([
+            $customer_id,
+            $row['flower_id'],
+            $row['qty'],
+            $row['price'],
+            $row['time'],
+        ]);
     }
 
     // Persist merge history coming from client-side instant merge.

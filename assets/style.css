@@ -507,11 +507,11 @@ table td {
 }
 #actual-sale-form .items-header.item-row,
 #actual-sale-form #actual-items .actual-row {
-  min-width: 620px;
+  min-width: 660px;
 }
 #actual-sale-form .actual-row {
   display: grid !important;
-  grid-template-columns: minmax(85px, 118px) 46px 90px 170px 32px !important;
+  grid-template-columns: minmax(85px, 118px) 46px 90px 170px 72px !important;
   gap: 8px;
   align-items: center;
 }
@@ -553,8 +553,8 @@ table td {
 @media (max-width: 640px) {
   #actual-sale-form .actual-row,
   #actual-sale-form .items-header.item-row {
-    grid-template-columns: minmax(85px, 118px) 44px 88px 160px 30px !important;
-    min-width: 600px;
+    grid-template-columns: minmax(85px, 118px) 44px 88px 160px 66px !important;
+    min-width: 650px;
   }
   .actual-sale-totals .field label {
     min-width: 150px;
@@ -704,6 +704,26 @@ table td {
 }
 .merge-history-list li:last-child {
   margin-bottom: 0;
+}
+.row-action-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.save-row-btn {
+  height: 30px;
+  min-width: 34px;
+  padding: 0 8px;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.save-row-btn:hover {
+  background: #dbeafe;
 }
 .history-delete-btn {
   border: 1px solid #fecaca;
